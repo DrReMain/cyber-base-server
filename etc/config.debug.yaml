@@ -13,12 +13,13 @@ jwt:
 
 zap:
   director: logs
-  level: debug # debug/info/warn/ewror/dpanic/panic/fatal
+  level: debug # debug/info/warn/error/fatal
   prefix: ""
   format: console # json/console
   encode-level: CapitalColorLevelEncoder
   stacktrace-key: stacktrace
   stdout: true
+  files: false
   show-line: true
 
 redis:

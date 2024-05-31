@@ -58,6 +58,10 @@ func buildCore(level zapcore.Level) hzzap.CoreConfig {
 }
 
 func buildWriteSyncer(level zapcore.Level) zapcore.WriteSyncer {
+	if !cyber.Config.Zap.Files {
+		return zapcore.AddSync(os.Stdout)
+	}
+
 	c := buildCutter(level.String())
 	if cyber.Config.Zap.Stdout {
 		multi := zapcore.NewMultiWriteSyncer(os.Stdout, c)

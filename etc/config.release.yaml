@@ -2,7 +2,7 @@ system:
   port: 8000
   ip-limit-count: 15000
   ip-limit-time: 3600
-  db: mysql # mysql pgsql sqlite
+  db: mysql       # mysql pgsql sqlite
   redis: true
 
 jwt:
@@ -13,12 +13,13 @@ jwt:
 
 zap:
   director: logs
-  level: info # debug/info/warn/ewror/dpanic/panic/fatal
+  level: info     # debug/info/warn/error/fatal
   prefix: ""
   format: console # json/console
   encode-level: CapitalLevelEncoder
   stacktrace-key: stacktrace
   stdout: false
+  files: true
   show-line: true
 
 redis:
