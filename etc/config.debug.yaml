@@ -1,0 +1,68 @@
+system:
+  port: 8000
+  ip-limit-count: 15000
+  ip-limit-time: 3600
+  db: mysql # mysql pgsql sqlite
+  redis: true
+
+jwt:
+  signing-key: secret
+  expires-time: 7d
+  buffer-time: 1d
+  issuer: issuer
+
+zap:
+  director: logs
+  level: debug # debug/info/warn/ewror/dpanic/panic/fatal
+  prefix: ""
+  format: console # json/console
+  encode-level: CapitalColorLevelEncoder
+  stacktrace-key: stacktrace
+  stdout: true
+  show-line: true
+
+redis:
+  address: 127.0.0.1:6379
+  password: ""
+  db: 0
+  cluster: false
+  cluster-address:
+    - "192.168.1.1:7000"
+    - "192.168.1.2:7000"
+    - "192.168.1.3:7000"
+
+mysql:
+  path: "127.0.0.1"
+  port: "3306"
+  config: "charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai"
+  dbname: "testdb"
+  username: "root"
+  password: "root"
+  max-idle-conns: 10
+  max-open-conns: 100
+  log-mode: ""
+  log-zap: true
+
+pgsql:
+  path: "127.0.0.1"
+  port: "5432"
+  config: "sslmode=disable TimeZone=Asia/Shanghai"
+  dbname: "testdb"
+  username: "postgres"
+  password: "postgres"
+  max-idle-conns: 10
+  max-open-conns: 100
+  log-mode: ""
+  log-zap: true
+
+sqlite:
+  path: ""
+  port: ""
+  config: ""
+  dbname: ""
+  username: ""
+  password: ""
+  max-idle-conns: 10
+  max-open-conns: 100
+  log-mode: ""
+  log-zap: false
