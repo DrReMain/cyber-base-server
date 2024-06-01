@@ -57,7 +57,7 @@ func UpdateDept(ctx context.Context, c *app.RequestContext) {
 	var req sys.UpdateDeptReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		res.ValidateFail(c, &sys.CreateDeptRes{
+		res.ValidateFail(c, &sys.UpdateDeptRes{
 			Base:   res.BaseValidateFail(err),
 			Result: nil,
 		}, err, res.Json(req))
@@ -70,7 +70,7 @@ func UpdateDept(ctx context.Context, c *app.RequestContext) {
 		}
 		err = sys_model.UpdateDept(m, uint64(req.ID))
 		if err != nil {
-			o := &sys.CreateDeptRes{
+			o := &sys.UpdateDeptRes{
 				Base:   res.BaseInternalFail(),
 				Result: nil,
 			}
@@ -78,7 +78,7 @@ func UpdateDept(ctx context.Context, c *app.RequestContext) {
 			return
 		}
 	}
-	res.Success(c, &sys.CreateDeptRes{
+	res.Success(c, &sys.UpdateDeptRes{
 		Base:   res.BaseSuccess(),
 		Result: nil,
 	})
@@ -91,7 +91,7 @@ func DeleteDept(ctx context.Context, c *app.RequestContext) {
 	var req sys.DeleteDeptReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		res.ValidateFail(c, &sys.CreateDeptRes{
+		res.ValidateFail(c, &sys.DeleteDeptRes{
 			Base:   res.BaseValidateFail(err),
 			Result: nil,
 		}, err, res.Json(req))
@@ -100,7 +100,7 @@ func DeleteDept(ctx context.Context, c *app.RequestContext) {
 	{
 		err = sys_model.DeleteDept(uint64(req.ID))
 		if err != nil {
-			o := &sys.CreateDeptRes{
+			o := &sys.DeleteDeptRes{
 				Base:   res.BaseInternalFail(),
 				Result: nil,
 			}
@@ -108,7 +108,7 @@ func DeleteDept(ctx context.Context, c *app.RequestContext) {
 			return
 		}
 	}
-	res.Success(c, &sys.CreateDeptRes{
+	res.Success(c, &sys.DeleteDeptRes{
 		Base:   res.BaseSuccess(),
 		Result: nil,
 	})
@@ -121,13 +121,35 @@ func QueryAllDept(ctx context.Context, c *app.RequestContext) {
 	var req sys.QueryAllDeptReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		res.ValidateFail(c, &sys.QueryAllDeptRes{
+			Base:   res.BaseValidateFail(err),
+			Result: nil,
+		}, err, res.Json(req))
 		return
 	}
 
-	resp := new(sys.QueryAllDeptRes)
-
-	c.JSON(consts.StatusOK, resp)
+	//l, err := sys_model.QueryDeptAll(*req.DeptName)
+	//if err != nil {
+	//	o := &sys.DeleteDeptRes{
+	//		Base:   res.BaseInternalFail(),
+	//		Result: nil,
+	//	}
+	//	res.InternalFail(c, o, err, res.Json(utils.H{"dept_name": *req.DeptName}))
+	//	return
+	//}
+	//result := make([]*sys.Dept, 0, len(l))
+	//for _, dept := range l {
+	//	result = append(result, &sys.Dept{
+	//		ID:       int64(dept.ID),
+	//		UUID:     dept.UUID.String(),
+	//		DeptName: dept.DeptName,
+	//		Remark:   dept.Remark,
+	//	})
+	//}
+	res.Success(c, &sys.QueryAllDeptRes{
+		Base:   res.BaseSuccess(),
+		Result: nil,
+	})
 }
 
 // QueryListDept .

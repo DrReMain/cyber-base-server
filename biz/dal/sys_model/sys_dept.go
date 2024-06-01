@@ -31,8 +31,8 @@ func DeleteDept(id uint64) (err error) {
 	return
 }
 
-func QueryDept(id uint64) (item *SysDept, err error) {
-	err = cyber.DB.Where("id = ?", id).First(item).Error
+func QueryDeptAll(deptName string) (list []SysDept, err error) {
+	err = cyber.DB.Model(&SysDept{}).Where("dept_name LIKE = ?", "%"+deptName+"%").Find(&list).Error
 	return
 }
 
@@ -45,7 +45,7 @@ func QueryDeptList(pageNum, pageSize int, deptName string) (list []SysDept, num 
 	return
 }
 
-func QueryDeptListAll(deptName string) (list []SysDept, err error) {
-	err = cyber.DB.Model(&SysDept{}).Where("dept_name LIKE = ?", "%"+deptName+"%").Find(&list).Error
+func QueryDeptItem(id uint64) (item *SysDept, err error) {
+	err = cyber.DB.Where("id = ?", id).First(item).Error
 	return
 }
