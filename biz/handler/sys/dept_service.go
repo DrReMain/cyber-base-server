@@ -20,14 +20,12 @@ func CreateDept(ctx context.Context, c *app.RequestContext) {
 	var req sys.CreateDeptReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		o := &sys.CreateDeptRes{
+		res.ValidateFail(c, &sys.CreateDeptRes{
 			Base:   res.BaseValidateFail(err),
 			Result: nil,
-		}
-		res.ValidateFail(c, o, err, res.Json(req))
+		}, err, res.Json(req))
 		return
 	}
-
 	{
 		m := &sys_model.SysDept{
 			UUID:     uuid.Must(uuid.NewV4()),
@@ -44,7 +42,6 @@ func CreateDept(ctx context.Context, c *app.RequestContext) {
 			return
 		}
 	}
-
 	res.Success(c, &sys.CreateDeptRes{
 		Base:   res.BaseSuccess(),
 		Result: nil,
@@ -58,13 +55,31 @@ func UpdateDept(ctx context.Context, c *app.RequestContext) {
 	var req sys.UpdateDeptReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		res.ValidateFail(c, &sys.CreateDeptRes{
+			Base:   res.BaseValidateFail(err),
+			Result: nil,
+		}, err, res.Json(req))
 		return
 	}
-
-	resp := new(sys.UpdateDeptRes)
-
-	c.JSON(consts.StatusOK, resp)
+	{
+		m := &sys_model.SysDept{
+			DeptName: *req.DeptName,
+			Remark:   *req.Remark,
+		}
+		err = sys_model.UpdateDept(m, uint64(req.ID))
+		if err != nil {
+			o := &sys.CreateDeptRes{
+				Base:   res.BaseInternalFail(),
+				Result: nil,
+			}
+			res.InternalFail(c, o, err, res.Json(m))
+			return
+		}
+	}
+	res.Success(c, &sys.CreateDeptRes{
+		Base:   res.BaseSuccess(),
+		Result: nil,
+	})
 }
 
 // DeleteDept .

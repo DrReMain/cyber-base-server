@@ -1005,7 +1005,7 @@ func (p *CreateDeptRes) String() string {
 
 type UpdateDeptReq struct {
 	ID       int64   `thrift:"id,1,required" json:"id,required" path:"id,required" vd:"$>0;msg:'参数错误'"`
-	DeptName *string `thrift:"dept_name,2,optional" form:"dept_name" json:"dept_name" vd:"(len($)>0 && len($)<100);msg:'参数错误'"`
+	DeptName *string `thrift:"dept_name,2,optional" form:"dept_name" json:"dept_name" vd:"len($) < 100;msg:'参数错误'"`
 	Remark   *string `thrift:"remark,3,optional" form:"remark" json:"remark" vd:"len($) < 500;msg:'参数错误'"`
 }
 

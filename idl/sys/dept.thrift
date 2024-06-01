@@ -26,7 +26,7 @@ struct CreateDeptRes {
 
 struct UpdateDeptReq {
     1: required i64 id              (api.path="id", api.vd="$>0;msg:'参数错误'")
-    2: optional string dept_name    (api.body="dept_name", api.vd="(len($)>0 && len($)<100);msg:'参数错误'")
+    2: optional string dept_name    (api.body="dept_name", api.vd="len($) < 100;msg:'参数错误'")
     3: optional string remark       (api.body="remark", api.vd="len($) < 500;msg:'参数错误'")
 }
 struct UpdateDeptRes {

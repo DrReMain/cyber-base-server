@@ -21,8 +21,8 @@ func CreateDept(d *SysDept) error {
 	return cyber.DB.Create(&d).Error
 }
 
-func UpdateDept(d *SysDept) (err error) {
-	err = cyber.DB.Model(&d).Where("id = ?", d.ID).Updates(d).Error
+func UpdateDept(d *SysDept, id uint64) (err error) {
+	err = cyber.DB.Model(&d).Where("id = ?", id).Updates(d).Error
 	return
 }
 
