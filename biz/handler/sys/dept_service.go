@@ -4,11 +4,13 @@ package sys
 
 import (
 	"context"
+
 	"github.com/DrReMain/cyber-base-server/biz/common/res"
 	"github.com/DrReMain/cyber-base-server/biz/dal/sys_model"
 	sys "github.com/DrReMain/cyber-base-server/biz/hertz_gen/sys"
 
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 	"github.com/gofrs/uuid/v5"
 )
@@ -89,13 +91,27 @@ func DeleteDept(ctx context.Context, c *app.RequestContext) {
 	var req sys.DeleteDeptReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		res.ValidateFail(c, &sys.CreateDeptRes{
+			Base:   res.BaseValidateFail(err),
+			Result: nil,
+		}, err, res.Json(req))
 		return
 	}
-
-	resp := new(sys.DeleteDeptRes)
-
-	c.JSON(consts.StatusOK, resp)
+	{
+		err = sys_model.DeleteDept(uint64(req.ID))
+		if err != nil {
+			o := &sys.CreateDeptRes{
+				Base:   res.BaseInternalFail(),
+				Result: nil,
+			}
+			res.InternalFail(c, o, err, res.Json(utils.H{"id": req.ID}))
+			return
+		}
+	}
+	res.Success(c, &sys.CreateDeptRes{
+		Base:   res.BaseSuccess(),
+		Result: nil,
+	})
 }
 
 // QueryAllDept .
