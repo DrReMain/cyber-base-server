@@ -10,6 +10,10 @@ struct Dept {
     3: string   dept_name
     4: string   remark
 }
+struct PResult {
+    1: required pagination.P    p
+    2: required list<Dept>      list
+}
 
 struct CreateDeptReq {
     1: required string dept_name    (api.body="dept_name", api.vd="(len($)>0 && len($)<100);msg:'参数错误'")
@@ -52,12 +56,8 @@ struct QueryListDeptReq {
     3: optional string  dept_name   (api.query="dept_name")
 }
 struct QueryListDeptRes {
-    struct Result {
-        1: required pagination.P    p
-        2: required list<Dept>      list
-    }
     1: required base.Base   base
-    2: required Result      result
+    2: required PResult     result
 }
 
 struct QueryItemDeptReq {

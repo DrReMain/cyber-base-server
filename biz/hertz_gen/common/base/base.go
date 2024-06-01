@@ -9,10 +9,10 @@ import (
 )
 
 type Base struct {
-	T       int64     `thrift:"t,1" form:"t" json:"t" query:"t"`
-	Success bool      `thrift:"success,2" form:"success" json:"success" query:"success"`
-	Code    code.Code `thrift:"code,3" form:"code" json:"code" query:"code"`
-	Msg     string    `thrift:"msg,4" form:"msg" json:"msg" query:"msg"`
+	T       int64     `thrift:"t,1,required" form:"t,required" json:"t,required" query:"t,required"`
+	Success bool      `thrift:"success,2,required" form:"success,required" json:"success,required" query:"success,required"`
+	Code    code.Code `thrift:"code,3,required" form:"code,required" json:"code,required" query:"code,required"`
+	Msg     string    `thrift:"msg,4,required" form:"msg,required" json:"msg,required" query:"msg,required"`
 }
 
 func NewBase() *Base {
@@ -46,6 +46,10 @@ func (p *Base) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
+	var issetT bool = false
+	var issetSuccess bool = false
+	var issetCode bool = false
+	var issetMsg bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -66,6 +70,7 @@ func (p *Base) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
+				issetT = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -74,6 +79,7 @@ func (p *Base) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
+				issetSuccess = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -82,6 +88,7 @@ func (p *Base) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
+				issetCode = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -90,6 +97,7 @@ func (p *Base) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField4(iprot); err != nil {
 					goto ReadFieldError
 				}
+				issetMsg = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -106,6 +114,25 @@ func (p *Base) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
+	if !issetT {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetSuccess {
+		fieldId = 2
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetCode {
+		fieldId = 3
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetMsg {
+		fieldId = 4
+		goto RequiredFieldNotSetError
+	}
 	return nil
 ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
@@ -120,6 +147,8 @@ ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_Base[fieldId]))
 }
 
 func (p *Base) ReadField1(iprot thrift.TProtocol) error {

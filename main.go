@@ -18,7 +18,7 @@ func init() {
 	initialize.LocalCache()
 	initialize.Gorm()
 	initialize.Redis()
-	initialize.Cron()
+	//initialize.Cron()
 }
 
 func main() {

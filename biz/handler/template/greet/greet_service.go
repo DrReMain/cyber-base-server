@@ -5,12 +5,11 @@ package greet
 import (
 	"context"
 
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-
 	"github.com/DrReMain/cyber-base-server/biz/common/res"
-	code "github.com/DrReMain/cyber-base-server/biz/hertz_gen/common/code"
+	"github.com/DrReMain/cyber-base-server/biz/hertz_gen/common/code"
 	greet "github.com/DrReMain/cyber-base-server/biz/hertz_gen/template/greet"
+
+	"github.com/cloudwego/hertz/pkg/app"
 )
 
 // Greet .
@@ -20,14 +19,15 @@ func Greet(ctx context.Context, c *app.RequestContext) {
 	var req greet.GreetReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.JSON(consts.StatusOK, &greet.GreetRes{
+		o := &greet.GreetRes{
 			Base:   res.Base(false, code.Code_ParamsInvalid, err),
 			Result: nil,
-		})
+		}
+		res.ValidateFail(c, o, code.Code_ParamsInvalid, &req, err)
 		return
 	}
 
-	c.JSON(consts.StatusOK, &greet.GreetRes{
+	res.Success(c, &greet.GreetRes{
 		Base:   res.Base(true, code.Code_Success),
 		Result: &greet.Result{TextContent: "hello " + req.NameContent},
 	})
