@@ -9,7 +9,7 @@ import (
 	"github.com/DrReMain/cyber-base-server/cyber/initialize"
 
 	// gorm models
-	"github.com/DrReMain/cyber-base-server/biz/dal/sys"
+	"github.com/DrReMain/cyber-base-server/biz/dal/sys_model"
 )
 
 func init() {
@@ -23,8 +23,8 @@ func main() {
 		defer db.Close()
 
 		cyber.DB.AutoMigrate(
-			sys.SysUser{},
-			sys.SysDept{},
+			sys_model.SysUser{},
+			sys_model.SysDept{},
 		)
 	} else {
 		log.Fatalln("[DB]: 未连接数据库")

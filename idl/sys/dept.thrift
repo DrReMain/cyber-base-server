@@ -16,7 +16,7 @@ struct PResult {
 }
 
 struct CreateDeptReq {
-    1: required string dept_name    (api.body="dept_name", api.vd="(len($)>0 && len($)<100);msg:'参数错误'")
+    1: optional string dept_name    (api.body="dept_name", api.vd="(len($)>0 && len($)<100);msg:'参数错误'")
     2: optional string remark       (api.body="remark", api.vd="len($) < 500;msg:'参数错误'")
 }
 struct CreateDeptRes {
