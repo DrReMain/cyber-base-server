@@ -7,30 +7,28 @@ import (
 )
 
 type GeneralDB struct {
-	Prefix       string `mapstructure:"prefix" json:"prefix" yaml:"prefix"`
+	Path         string `mapstructure:"path" json:"path" yaml:"path"`
 	Port         string `mapstructure:"port" json:"port" yaml:"port"`
 	Config       string `mapstructure:"config" json:"config" yaml:"config"`
 	Dbname       string `mapstructure:"dbname" json:"dbname" yaml:"dbname"`
 	Username     string `mapstructure:"username" json:"username" yaml:"username"`
 	Password     string `mapstructure:"password" json:"password" yaml:"password"`
-	Path         string `mapstructure:"path" json:"path" yaml:"path"`
-	Engine       string `mapstructure:"engine" json:"engine" yaml:"engine" default:"InnoDB"`
-	LogMode      string `mapstructure:"log-mode" json:"log-mode" yaml:"log-mode"`
 	MaxIdleConns int    `mapstructure:"max-idle-conns" json:"max-idle-conns" yaml:"max-idle-conns"`
 	MaxOpenConns int    `mapstructure:"max-open-conns" json:"max-open-conns" yaml:"max-open-conns"`
-	Singular     bool   `mapstructure:"singular" json:"singular" yaml:"singular"`
+	Engine       string `mapstructure:"engine" json:"engine" yaml:"engine" default:"InnoDB"`
+	LogLevel     string `mapstructure:"log-level" json:"log-level" yaml:"log-level"`
 	LogZap       bool   `mapstructure:"log-zap" json:"log-zap" yaml:"log-zap"`
 }
 
-func (g GeneralDB) LogLevel() logger.LogLevel {
-	switch strings.ToLower(g.LogMode) {
-	case "silent", "Silent":
+func (g GeneralDB) LogMode() logger.LogLevel {
+	switch strings.ToLower(g.LogLevel) {
+	case "silent":
 		return logger.Silent
-	case "error", "Error":
+	case "error":
 		return logger.Error
-	case "warn", "Warn":
+	case "warn":
 		return logger.Warn
-	case "info", "Info":
+	case "info":
 		return logger.Info
 	default:
 		return logger.Info

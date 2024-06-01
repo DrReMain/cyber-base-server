@@ -43,11 +43,11 @@ func Success(c *app.RequestContext, o any) {
 	c.JSON(consts.StatusOK, o)
 }
 func ValidateFail(c *app.RequestContext, o any, err error, p ...string) {
-	hlog.Infof("[%s]: %s %s", code.Code_ParamsInvalid.String(), err, p)
+	hlog.Infof("[%s]: %s \r\n%s", code.Code_ParamsInvalid.String(), err, p)
 	c.JSON(consts.StatusOK, o)
 }
 func InternalFail(c *app.RequestContext, o any, err error, p ...string) {
-	hlog.Infof("[%s]: %s %s", code.Code_DBError.String(), err, p)
+	hlog.Infof("[%s]: %s \r\n%s", code.Code_DBError.String(), err, p)
 	c.JSON(consts.StatusInternalServerError, o)
 }
 

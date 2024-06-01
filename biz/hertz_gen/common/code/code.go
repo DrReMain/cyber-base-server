@@ -37,7 +37,7 @@ func CodeFromString(s string) (Code, error) {
 	case "ParamsInvalid":
 		return Code_ParamsInvalid, nil
 	}
-	return Code(0), fmt.Errorf("not a valid Code string")
+	return Code(0), fmt.Errorf("not a valid Code default")
 }
 
 func CodePtr(v Code) *Code { return &v }

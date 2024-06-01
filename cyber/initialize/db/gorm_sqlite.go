@@ -14,7 +14,7 @@ func GormSqlite() *gorm.DB {
 		return nil
 	}
 
-	if db, err := gorm.Open(sqlite.Open(s.Dsn()), internal.Gorm.Config(s.Prefix, s.Singular)); err != nil {
+	if db, err := gorm.Open(sqlite.Open(s.Dsn()), internal.Gorm.Config()); err != nil {
 		panic(err)
 	} else {
 		sqlDB, _ := db.DB()

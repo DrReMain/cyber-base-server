@@ -20,7 +20,7 @@ zap:
   stacktrace-key: stacktrace
   stdout: true
   files: false
-  show-line: true
+  show-caller: true
 
 redis:
   address: 127.0.0.1:6379
@@ -41,7 +41,7 @@ mysql:
   password: "root"
   max-idle-conns: 10
   max-open-conns: 100
-  log-mode: ""
+  log-level: "info"   # silent / error / warn / info
   log-zap: true
 
 pgsql:
@@ -53,7 +53,7 @@ pgsql:
   password: "postgres"
   max-idle-conns: 10
   max-open-conns: 100
-  log-mode: ""
+  log-level: ""
   log-zap: true
 
 sqlite:
@@ -65,5 +65,5 @@ sqlite:
   password: ""
   max-idle-conns: 10
   max-open-conns: 100
-  log-mode: ""
+  log-level: ""
   log-zap: false

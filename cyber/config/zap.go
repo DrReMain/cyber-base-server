@@ -15,7 +15,7 @@ type Zap struct {
 	StacktraceKey string `mapstructure:"stacktrace-key" json:"stacktrace-key" yaml:"stacktrace-key"`
 	Stdout        bool   `mapstructure:"stdout" json:"stdout" yaml:"stdout"`
 	Files         bool   `mapstructure:"files" json:"files" yaml:"files"`
-	ShowLine      bool   `mapstructure:"show-line" json:"show-line" yaml:"show-line"`
+	ShowCaller    bool   `mapstructure:"show-caller" json:"show-line" yaml:"show-line"`
 }
 
 func (z *Zap) Levels() []zapcore.Level {

@@ -7,11 +7,12 @@ import (
 
 	"github.com/DrReMain/cyber-base-server/biz/common/res"
 	"github.com/DrReMain/cyber-base-server/biz/dal/sys_model"
+	pagination "github.com/DrReMain/cyber-base-server/biz/hertz_gen/common/pagination"
 	sys "github.com/DrReMain/cyber-base-server/biz/hertz_gen/sys"
+	cutils_default "github.com/DrReMain/cyber-base-server/cyber/utils/default"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/utils"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
 	"github.com/gofrs/uuid/v5"
 )
 
@@ -44,6 +45,7 @@ func CreateDept(ctx context.Context, c *app.RequestContext) {
 			return
 		}
 	}
+
 	res.Success(c, &sys.CreateDeptRes{
 		Base:   res.BaseSuccess(),
 		Result: nil,
@@ -78,6 +80,7 @@ func UpdateDept(ctx context.Context, c *app.RequestContext) {
 			return
 		}
 	}
+
 	res.Success(c, &sys.UpdateDeptRes{
 		Base:   res.BaseSuccess(),
 		Result: nil,
@@ -108,6 +111,7 @@ func DeleteDept(ctx context.Context, c *app.RequestContext) {
 			return
 		}
 	}
+
 	res.Success(c, &sys.DeleteDeptRes{
 		Base:   res.BaseSuccess(),
 		Result: nil,
@@ -127,28 +131,28 @@ func QueryAllDept(ctx context.Context, c *app.RequestContext) {
 		}, err, res.Json(req))
 		return
 	}
+	l, err := sys_model.QueryDeptAll(cutils_default.String(req.DeptName))
+	if err != nil {
+		o := &sys.DeleteDeptRes{
+			Base:   res.BaseInternalFail(),
+			Result: nil,
+		}
+		res.InternalFail(c, o, err, res.Json(utils.H{"dept_name": cutils_default.String(req.DeptName)}))
+		return
+	}
+	result := make([]*sys.Dept, 0, len(l))
+	for _, dept := range l {
+		result = append(result, &sys.Dept{
+			ID:       int64(dept.ID),
+			UUID:     dept.UUID.String(),
+			DeptName: dept.DeptName,
+			Remark:   dept.Remark,
+		})
+	}
 
-	//l, err := sys_model.QueryDeptAll(*req.DeptName)
-	//if err != nil {
-	//	o := &sys.DeleteDeptRes{
-	//		Base:   res.BaseInternalFail(),
-	//		Result: nil,
-	//	}
-	//	res.InternalFail(c, o, err, res.Json(utils.H{"dept_name": *req.DeptName}))
-	//	return
-	//}
-	//result := make([]*sys.Dept, 0, len(l))
-	//for _, dept := range l {
-	//	result = append(result, &sys.Dept{
-	//		ID:       int64(dept.ID),
-	//		UUID:     dept.UUID.String(),
-	//		DeptName: dept.DeptName,
-	//		Remark:   dept.Remark,
-	//	})
-	//}
 	res.Success(c, &sys.QueryAllDeptRes{
 		Base:   res.BaseSuccess(),
-		Result: nil,
+		Result: result,
 	})
 }
 
@@ -159,13 +163,48 @@ func QueryListDept(ctx context.Context, c *app.RequestContext) {
 	var req sys.QueryListDeptReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		res.ValidateFail(c, &sys.QueryListDeptRes{
+			Base:   res.BaseValidateFail(err),
+			Result: nil,
+		}, err, res.Json(req))
 		return
 	}
 
-	resp := new(sys.QueryListDeptRes)
+	l, n, s, t, m, err := sys_model.QueryDeptList(
+		cutils_default.Int(req.PageNum, 1),
+		cutils_default.Int(req.PageSize, 10),
+		cutils_default.String(req.DeptName),
+	)
+	if err != nil {
+		o := &sys.QueryListDeptRes{
+			Base:   res.BaseInternalFail(),
+			Result: nil,
+		}
+		res.InternalFail(c, o, err)
+		return
+	}
+	list := make([]*sys.Dept, 0, len(l))
+	for _, dept := range l {
+		list = append(list, &sys.Dept{
+			ID:       int64(dept.ID),
+			UUID:     dept.UUID.String(),
+			DeptName: dept.DeptName,
+			Remark:   dept.Remark,
+		})
+	}
 
-	c.JSON(consts.StatusOK, resp)
+	res.Success(c, &sys.QueryListDeptRes{
+		Base: res.BaseSuccess(),
+		Result: &sys.PResult{
+			P: &pagination.P{
+				Total:    t,
+				More:     m,
+				PageSize: int32(s),
+				PageNum:  int32(n),
+			},
+			List: list,
+		},
+	})
 }
 
 // QueryItemDept .
@@ -175,11 +214,29 @@ func QueryItemDept(ctx context.Context, c *app.RequestContext) {
 	var req sys.QueryItemDeptReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		res.ValidateFail(c, &sys.QueryItemDeptRes{
+			Base:   res.BaseValidateFail(err),
+			Result: nil,
+		}, err, res.Json(req))
 		return
 	}
 
-	resp := new(sys.QueryItemDeptRes)
+	item, err := sys_model.QueryDeptItem(uint64(req.ID))
+	if err != nil {
+		res.InternalFail(c, &sys.QueryItemDeptRes{
+			Base:   res.BaseInternalFail(),
+			Result: nil,
+		}, err)
+		return
+	}
 
-	c.JSON(consts.StatusOK, resp)
+	res.Success(c, &sys.QueryItemDeptRes{
+		Base: res.BaseSuccess(),
+		Result: &sys.Dept{
+			ID:       int64(item.ID),
+			UUID:     item.UUID.String(),
+			DeptName: item.DeptName,
+			Remark:   item.Remark,
+		},
+	})
 }

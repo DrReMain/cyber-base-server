@@ -3,7 +3,7 @@ package internal
 import (
 	"fmt"
 
-	"go.uber.org/zap"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"gorm.io/gorm/logger"
 
 	"github.com/DrReMain/cyber-base-server/cyber/config"
@@ -20,17 +20,16 @@ func NewWriter(config config.GeneralDB, writer logger.Writer) *Writer {
 
 func (c *Writer) Printf(message string, data ...any) {
 	if c.config.LogZap {
-		switch c.config.LogLevel() {
+		switch c.config.LogMode() {
 		case logger.Silent:
-			zap.L().Debug(fmt.Sprintf(message, data...))
 		case logger.Error:
-			zap.L().Error(fmt.Sprintf(message, data...))
+			hlog.Error(fmt.Sprintf(message, data...))
 		case logger.Warn:
-			zap.L().Warn(fmt.Sprintf(message, data...))
+			hlog.Warn(fmt.Sprintf(message, data...))
 		case logger.Info:
-			zap.L().Info(fmt.Sprintf(message, data...))
+			fallthrough
 		default:
-			zap.L().Info(fmt.Sprintf(message, data...))
+			hlog.Info(fmt.Sprintf(message, data...))
 		}
 		return
 	}

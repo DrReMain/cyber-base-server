@@ -19,7 +19,7 @@ func GormMysql() *gorm.DB {
 		DefaultStringSize:         256,
 		SkipInitializeWithVersion: false,
 	}
-	if db, err := gorm.Open(mysql.New(mysqlConfig), internal.Gorm.Config(m.Prefix, m.Singular)); err != nil {
+	if db, err := gorm.Open(mysql.New(mysqlConfig), internal.Gorm.Config()); err != nil {
 		return nil
 	} else {
 		db.InstanceSet("gorm:table_options", "ENGINE="+m.Engine)

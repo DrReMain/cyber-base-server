@@ -32,7 +32,7 @@ func DeleteDept(id uint64) (err error) {
 }
 
 func QueryDeptAll(deptName string) (list []SysDept, err error) {
-	err = cyber.DB.Model(&SysDept{}).Where("dept_name LIKE = ?", "%"+deptName+"%").Find(&list).Error
+	err = cyber.DB.Model(&SysDept{}).Where("dept_name LIKE ?", "%"+deptName+"%").Find(&list).Error
 	return
 }
 

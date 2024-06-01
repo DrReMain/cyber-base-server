@@ -20,7 +20,7 @@ zap:
   stacktrace-key: stacktrace
   stdout: false
   files: true
-  show-line: true
+  show-caller: true
 
 redis:
   address: 127.0.0.1:6379

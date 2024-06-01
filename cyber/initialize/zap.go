@@ -21,10 +21,10 @@ func Zap() {
 	}
 
 	var opts []zap.Option
-	if cyber.Config.Zap.ShowLine {
+	if cyber.Config.Zap.ShowCaller {
 		opts = []zap.Option{
 			zap.AddCaller(),
-			zap.AddCallerSkip(3),
+			zap.AddCallerSkip(4),
 		}
 	}
 
