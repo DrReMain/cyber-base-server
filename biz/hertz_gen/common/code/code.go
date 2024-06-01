@@ -12,13 +12,16 @@ type Code int64
 
 const (
 	Code_Success       Code = 0
-	Code_ParamsInvalid Code = 100000
+	Code_DBError       Code = 100000
+	Code_ParamsInvalid Code = 100001
 )
 
 func (p Code) String() string {
 	switch p {
 	case Code_Success:
 		return "Success"
+	case Code_DBError:
+		return "DBError"
 	case Code_ParamsInvalid:
 		return "ParamsInvalid"
 	}
@@ -29,6 +32,8 @@ func CodeFromString(s string) (Code, error) {
 	switch s {
 	case "Success":
 		return Code_Success, nil
+	case "DBError":
+		return Code_DBError, nil
 	case "ParamsInvalid":
 		return Code_ParamsInvalid, nil
 	}

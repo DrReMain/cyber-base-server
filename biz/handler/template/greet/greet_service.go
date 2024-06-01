@@ -6,7 +6,6 @@ import (
 	"context"
 
 	"github.com/DrReMain/cyber-base-server/biz/common/res"
-	"github.com/DrReMain/cyber-base-server/biz/hertz_gen/common/code"
 	greet "github.com/DrReMain/cyber-base-server/biz/hertz_gen/template/greet"
 
 	"github.com/cloudwego/hertz/pkg/app"
@@ -20,15 +19,15 @@ func Greet(ctx context.Context, c *app.RequestContext) {
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		o := &greet.GreetRes{
-			Base:   res.Base(false, code.Code_ParamsInvalid, err),
+			Base:   res.BaseValidateFail(err),
 			Result: nil,
 		}
-		res.ValidateFail(c, o, code.Code_ParamsInvalid, &req, err)
+		res.ValidateFail(c, o, err, res.Json(req))
 		return
 	}
 
 	res.Success(c, &greet.GreetRes{
-		Base:   res.Base(true, code.Code_Success),
+		Base:   res.BaseSuccess(),
 		Result: &greet.Result{TextContent: "hello " + req.NameContent},
 	})
 }

@@ -1,6 +1,8 @@
 package res
 
 import (
+	"errors"
+	"github.com/bytedance/sonic"
 	"time"
 
 	"github.com/cloudwego/hertz/pkg/app"
@@ -27,16 +29,29 @@ func Base(success bool, code code.Code, rest ...any) *base.Base {
 		Msg:     msg,
 	}
 }
-
-type parse interface {
-	String() string
+func BaseSuccess() *base.Base {
+	return Base(true, code.Code_Success)
 }
-
-func ValidateFail(c *app.RequestContext, o any, code, req parse, err error) {
-	hlog.Infof("[%s]: %s --> %s \n", code.String(), req.String(), err)
-	c.JSON(consts.StatusOK, o)
+func BaseValidateFail(err error) *base.Base {
+	return Base(false, code.Code_ParamsInvalid, err)
+}
+func BaseInternalFail() *base.Base {
+	return Base(false, code.Code_DBError, errors.New("服务器错误"))
 }
 
 func Success(c *app.RequestContext, o any) {
 	c.JSON(consts.StatusOK, o)
+}
+func ValidateFail(c *app.RequestContext, o any, err error, p ...string) {
+	hlog.Infof("[%s]: %s %s\n", code.Code_ParamsInvalid.String(), err, p)
+	c.JSON(consts.StatusOK, o)
+}
+func InternalFail(c *app.RequestContext, o any, err error, p ...string) {
+	hlog.Infof("[%s]: %s %s\n", code.Code_DBError.String(), err, p)
+	c.JSON(consts.StatusInternalServerError, o)
+}
+
+func Json(o any) string {
+	j, _ := sonic.Marshal(o)
+	return string(j)
 }
