@@ -30,25 +30,30 @@ func DeleteDept(id string) (err error) {
 	return
 }
 
-func QueryDeptAll(DeptName string, CreatedAt []int64) (list []SysDept, err error) {
+func QueryDeptAll(DeptName string, CreatedAt []int64) (list *[]SysDept, err error) {
+	list = &[]SysDept{}
+
 	query := cyber.DB.Model(&SysDept{}).Where("dept_name LIKE ?", "%"+DeptName+"%")
 	if len(CreatedAt) == 2 {
 		query = query.Where("created_at BETWEEN ? AND ?", CreatedAt[0], CreatedAt[1])
 	}
-	err = query.Find(&list).Error
+	err = query.Find(list).Error
 	return
 }
 
-func QueryDeptList(pageNum, pageSize int, DeptName string) (list []SysDept, total int64, more bool, num, size int, err error) {
+func QueryDeptList(pageNum, pageSize int, DeptName string) (list *[]SysDept, total int64, more bool, num, size int, err error) {
+	list = &[]SysDept{}
+
 	num, size = pageNum, pageSize
 	query := cyber.DB.Model(&SysDept{}).Where("dept_name LIKE ?", "%"+DeptName+"%")
 	query.Count(&total)
-	query.Offset((pageNum - 1) * pageSize).Limit(pageSize).Find(&list)
+	query.Offset((pageNum - 1) * pageSize).Limit(pageSize).Find(list)
 	more = total >= int64(pageNum*pageSize)
 	return
 }
 
-func QueryDeptItem(id string) (item SysDept, err error) {
-	err = cyber.DB.Where("id = ?", id).First(&item).Error
+func QueryDeptItem(id string) (item *SysDept, err error) {
+	item = &SysDept{}
+	err = cyber.DB.Where("id = ?", id).First(item).Error
 	return
 }

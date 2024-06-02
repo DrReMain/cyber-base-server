@@ -123,8 +123,8 @@ func QueryAllDept(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	result := make([]*dept.Dept, 0, len(l))
-	for _, d := range l {
+	result := make([]*dept.Dept, 0, len(*l))
+	for _, d := range *l {
 		result = append(result, &dept.Dept{
 			ID:       d.ID,
 			DeptName: cutils_default.String(d.DeptName),
@@ -161,8 +161,8 @@ func QueryListDept(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	list := make([]*dept.Dept, 0, len(l))
-	for _, d := range l {
+	list := make([]*dept.Dept, 0, len(*l))
+	for _, d := range *l {
 		list = append(list, &dept.Dept{
 			ID:       d.ID,
 			DeptName: cutils_default.String(d.DeptName),

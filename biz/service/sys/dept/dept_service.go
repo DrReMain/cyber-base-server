@@ -42,7 +42,7 @@ func (s *Service) DeleteDept(req *dept.DeleteDeptReq) (err error) {
 	return
 }
 
-func (s *Service) QueryAllDept(req *dept.QueryAllDeptReq) (list []sys_model.SysDept, err error) {
+func (s *Service) QueryAllDept(req *dept.QueryAllDeptReq) (list *[]sys_model.SysDept, err error) {
 	list, err = sys_model.QueryDeptAll(
 		cutils_default.String(req.DeptName),
 		req.CreatedAt,
@@ -51,7 +51,7 @@ func (s *Service) QueryAllDept(req *dept.QueryAllDeptReq) (list []sys_model.SysD
 }
 
 func (s *Service) QueryListDept(req *dept.QueryListDeptReq) (
-	list []sys_model.SysDept,
+	list *[]sys_model.SysDept,
 	total int64,
 	more bool,
 	num, size int,
@@ -65,7 +65,7 @@ func (s *Service) QueryListDept(req *dept.QueryListDeptReq) (
 	return
 }
 
-func (s *Service) QueryItemDept(req *dept.QueryItemDeptReq) (item sys_model.SysDept, err error) {
+func (s *Service) QueryItemDept(req *dept.QueryItemDeptReq) (item *sys_model.SysDept, err error) {
 	item, err = sys_model.QueryDeptItem(req.ID)
 	return
 }
