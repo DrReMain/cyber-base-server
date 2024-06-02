@@ -44,11 +44,11 @@ func QueryDeptAll(DeptName string, CreatedAt []int64) (list *[]SysDept, err erro
 func QueryDeptList(pageNum, pageSize int, DeptName string) (list *[]SysDept, total int64, more bool, num, size int, err error) {
 	list = &[]SysDept{}
 
-	num, size = pageNum, pageSize
 	query := cyber.DB.Model(&SysDept{}).Where("dept_name LIKE ?", "%"+DeptName+"%")
-	query.Count(&total)
-	query.Offset((pageNum - 1) * pageSize).Limit(pageSize).Find(list)
+	err = query.Count(&total).Error
+	err = query.Offset((pageNum - 1) * pageSize).Limit(pageSize).Find(list).Error
 	more = total >= int64(pageNum*pageSize)
+	num, size = pageNum, pageSize
 	return
 }
 

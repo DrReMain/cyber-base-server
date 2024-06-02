@@ -18,25 +18,27 @@ import (
 func CreateDept(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req dept.CreateDeptReq
+	r := res.NewRes(ctx, c, &req)
+
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		res.ValidateFail(c, &dept.CreateDeptRes{
+		r.ValidateFail(err, &dept.CreateDeptRes{
 			Base:   res.BaseValidateFail(err),
 			Result: nil,
-		}, err, res.Json(req))
+		})
 		return
 	}
 
-	m, err := sys_dept_service.NewService(ctx, c).CreateDept(&req)
+	err = sys_dept_service.NewService(ctx, c).CreateDept(&req)
 	if err != nil {
-		res.InternalFail(c, &dept.CreateDeptRes{
+		r.InternalFail(err, &dept.CreateDeptRes{
 			Base:   res.BaseInternalFail(),
 			Result: nil,
-		}, err, res.Json(m))
+		})
 		return
 	}
 
-	res.Success(c, &dept.CreateDeptRes{
+	r.Success(&dept.CreateDeptRes{
 		Base:   res.BaseSuccess(),
 		Result: nil,
 	})
@@ -47,25 +49,27 @@ func CreateDept(ctx context.Context, c *app.RequestContext) {
 func UpdateDept(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req dept.UpdateDeptReq
+	r := res.NewRes(ctx, c, &req)
+
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		res.ValidateFail(c, &dept.UpdateDeptRes{
+		r.ValidateFail(err, &dept.UpdateDeptRes{
 			Base:   res.BaseValidateFail(err),
 			Result: nil,
-		}, err, res.Json(req))
+		})
 		return
 	}
 
-	m, err := sys_dept_service.NewService(ctx, c).UpdateDept(&req)
+	err = sys_dept_service.NewService(ctx, c).UpdateDept(&req)
 	if err != nil {
-		res.InternalFail(c, &dept.UpdateDeptRes{
+		r.InternalFail(err, &dept.UpdateDeptRes{
 			Base:   res.BaseInternalFail(),
 			Result: nil,
-		}, err, res.Json(m))
+		})
 		return
 	}
 
-	res.Success(c, &dept.UpdateDeptRes{
+	r.Success(&dept.UpdateDeptRes{
 		Base:   res.BaseSuccess(),
 		Result: nil,
 	})
@@ -76,25 +80,27 @@ func UpdateDept(ctx context.Context, c *app.RequestContext) {
 func DeleteDept(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req dept.DeleteDeptReq
+	r := res.NewRes(ctx, c, &req)
+
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		res.ValidateFail(c, &dept.DeleteDeptRes{
+		r.ValidateFail(err, &dept.DeleteDeptRes{
 			Base:   res.BaseValidateFail(err),
 			Result: nil,
-		}, err, res.Json(req))
+		})
 		return
 	}
 
 	err = sys_dept_service.NewService(ctx, c).DeleteDept(&req)
 	if err != nil {
-		res.InternalFail(c, &dept.DeleteDeptRes{
+		r.InternalFail(err, &dept.DeleteDeptRes{
 			Base:   res.BaseInternalFail(),
 			Result: nil,
-		}, err, req.ID)
+		}, req.ID)
 		return
 	}
 
-	res.Success(c, &dept.DeleteDeptRes{
+	r.Success(&dept.DeleteDeptRes{
 		Base:   res.BaseSuccess(),
 		Result: nil,
 	})
@@ -105,21 +111,23 @@ func DeleteDept(ctx context.Context, c *app.RequestContext) {
 func QueryAllDept(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req dept.QueryAllDeptReq
+	r := res.NewRes(ctx, c, &req)
+
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		res.ValidateFail(c, &dept.QueryAllDeptRes{
+		r.ValidateFail(err, &dept.QueryAllDeptRes{
 			Base:   res.BaseValidateFail(err),
 			Result: nil,
-		}, err, res.Json(req))
+		})
 		return
 	}
 
 	l, err := sys_dept_service.NewService(ctx, c).QueryAllDept(&req)
 	if err != nil {
-		res.InternalFail(c, &dept.DeleteDeptRes{
+		r.InternalFail(err, &dept.DeleteDeptRes{
 			Base:   res.BaseInternalFail(),
 			Result: nil,
-		}, err)
+		})
 		return
 	}
 
@@ -132,7 +140,7 @@ func QueryAllDept(ctx context.Context, c *app.RequestContext) {
 		})
 	}
 
-	res.Success(c, &dept.QueryAllDeptRes{
+	r.Success(&dept.QueryAllDeptRes{
 		Base:   res.BaseSuccess(),
 		Result: result,
 	})
@@ -143,21 +151,23 @@ func QueryAllDept(ctx context.Context, c *app.RequestContext) {
 func QueryListDept(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req dept.QueryListDeptReq
+	r := res.NewRes(ctx, c, &req)
+
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		res.ValidateFail(c, &dept.QueryListDeptRes{
+		r.ValidateFail(err, &dept.QueryListDeptRes{
 			Base:   res.BaseValidateFail(err),
 			Result: nil,
-		}, err, res.Json(req))
+		})
 		return
 	}
 
-	l, t, m, n, s, err := sys_dept_service.NewService(ctx, c).QueryListDept(&req)
+	l, p, err := sys_dept_service.NewService(ctx, c).QueryListDept(&req)
 	if err != nil {
-		res.InternalFail(c, &dept.QueryListDeptRes{
+		r.InternalFail(err, &dept.QueryListDeptRes{
 			Base:   res.BaseInternalFail(),
 			Result: nil,
-		}, err)
+		})
 		return
 	}
 
@@ -170,10 +180,10 @@ func QueryListDept(ctx context.Context, c *app.RequestContext) {
 		})
 	}
 
-	res.Success(c, &dept.QueryListDeptRes{
+	r.Success(&dept.QueryListDeptRes{
 		Base: res.BaseSuccess(),
 		Result: &dept.PResult{
-			P:    res.P(t, m, n, s),
+			P:    p.Trans(),
 			List: list,
 		},
 	})
@@ -184,25 +194,27 @@ func QueryListDept(ctx context.Context, c *app.RequestContext) {
 func QueryItemDept(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req dept.QueryItemDeptReq
+	r := res.NewRes(ctx, c, &req)
+
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		res.ValidateFail(c, &dept.QueryItemDeptRes{
+		r.ValidateFail(err, &dept.QueryItemDeptRes{
 			Base:   res.BaseValidateFail(err),
 			Result: nil,
-		}, err, res.Json(req))
+		})
 		return
 	}
 
 	item, err := sys_dept_service.NewService(ctx, c).QueryItemDept(&req)
 	if err != nil {
-		res.InternalFail(c, &dept.QueryItemDeptRes{
+		r.InternalFail(err, &dept.QueryItemDeptRes{
 			Base:   res.BaseInternalFail(),
 			Result: nil,
-		}, err)
+		})
 		return
 	}
 
-	res.Success(c, &dept.QueryItemDeptRes{
+	r.Success(&dept.QueryItemDeptRes{
 		Base: res.BaseSuccess(),
 		Result: &dept.Dept{
 			ID:       item.ID,

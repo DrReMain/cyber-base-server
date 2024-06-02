@@ -1,6 +1,7 @@
 package res
 
 import (
+	"context"
 	"errors"
 	"time"
 
@@ -11,8 +12,31 @@ import (
 
 	"github.com/DrReMain/cyber-base-server/biz/hertz_gen/common/base"
 	"github.com/DrReMain/cyber-base-server/biz/hertz_gen/common/code"
-	"github.com/DrReMain/cyber-base-server/biz/hertz_gen/common/pagination"
 )
+
+type Res struct {
+	ctx context.Context
+	c   *app.RequestContext
+	req any
+}
+
+func NewRes(ctx context.Context, c *app.RequestContext, req any) *Res {
+	return &Res{ctx, c, req}
+}
+
+func (r *Res) ValidateFail(err error, o any) {
+	hlog.Infof("[%s]: %s \r\n%s", code.Code_ParamsInvalid.String(), err, Json(r.req))
+	r.c.JSON(consts.StatusOK, o)
+}
+
+func (r *Res) InternalFail(err error, o any, a ...any) {
+	hlog.Infof("[%s]: %s \r\n%s", code.Code_DBError.String(), err, Json(a))
+	r.c.JSON(consts.StatusInternalServerError, o)
+}
+
+func (r *Res) Success(o any) {
+	r.c.JSON(consts.StatusOK, o)
+}
 
 func Base(success bool, code code.Code, rest ...any) *base.Base {
 	var msg string
@@ -37,28 +61,7 @@ func BaseValidateFail(err error) *base.Base {
 	return Base(false, code.Code_ParamsInvalid, err)
 }
 func BaseInternalFail() *base.Base {
-	return Base(false, code.Code_DBError, errors.New("服务器错误"))
-}
-
-func P(total int64, more bool, num, size int) *pagination.P {
-	return &pagination.P{
-		Total:    total,
-		More:     more,
-		PageNum:  int32(num),
-		PageSize: int32(size),
-	}
-}
-
-func Success(c *app.RequestContext, o any) {
-	c.JSON(consts.StatusOK, o)
-}
-func ValidateFail(c *app.RequestContext, o any, err error, p ...string) {
-	hlog.Infof("[%s]: %s \r\n%s", code.Code_ParamsInvalid.String(), err, p)
-	c.JSON(consts.StatusOK, o)
-}
-func InternalFail(c *app.RequestContext, o any, err error, p ...string) {
-	hlog.Infof("[%s]: %s \r\n%s", code.Code_DBError.String(), err, p)
-	c.JSON(consts.StatusInternalServerError, o)
+	return Base(false, code.Code_DBError, errors.New("服务器异常"))
 }
 
 func Json(o any) string {
