@@ -17,6 +17,6 @@ struct GreetRes {
     2: required Result result
 }
 
-service GreetService {
+service GreetHandler {
     GreetRes Greet(1: GreetReq req) (api.get="/v1/template/greet/:name_content")
 }

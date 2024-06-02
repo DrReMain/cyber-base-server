@@ -509,70 +509,70 @@ func (p *GreetRes) String() string {
 
 }
 
-type GreetService interface {
+type GreetHandler interface {
 	Greet(ctx context.Context, req *GreetReq) (r *GreetRes, err error)
 }
 
-type GreetServiceClient struct {
+type GreetHandlerClient struct {
 	c thrift.TClient
 }
 
-func NewGreetServiceClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *GreetServiceClient {
-	return &GreetServiceClient{
+func NewGreetHandlerClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *GreetHandlerClient {
+	return &GreetHandlerClient{
 		c: thrift.NewTStandardClient(f.GetProtocol(t), f.GetProtocol(t)),
 	}
 }
 
-func NewGreetServiceClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *GreetServiceClient {
-	return &GreetServiceClient{
+func NewGreetHandlerClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *GreetHandlerClient {
+	return &GreetHandlerClient{
 		c: thrift.NewTStandardClient(iprot, oprot),
 	}
 }
 
-func NewGreetServiceClient(c thrift.TClient) *GreetServiceClient {
-	return &GreetServiceClient{
+func NewGreetHandlerClient(c thrift.TClient) *GreetHandlerClient {
+	return &GreetHandlerClient{
 		c: c,
 	}
 }
 
-func (p *GreetServiceClient) Client_() thrift.TClient {
+func (p *GreetHandlerClient) Client_() thrift.TClient {
 	return p.c
 }
 
-func (p *GreetServiceClient) Greet(ctx context.Context, req *GreetReq) (r *GreetRes, err error) {
-	var _args GreetServiceGreetArgs
+func (p *GreetHandlerClient) Greet(ctx context.Context, req *GreetReq) (r *GreetRes, err error) {
+	var _args GreetHandlerGreetArgs
 	_args.Req = req
-	var _result GreetServiceGreetResult
+	var _result GreetHandlerGreetResult
 	if err = p.Client_().Call(ctx, "Greet", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
 }
 
-type GreetServiceProcessor struct {
+type GreetHandlerProcessor struct {
 	processorMap map[string]thrift.TProcessorFunction
-	handler      GreetService
+	handler      GreetHandler
 }
 
-func (p *GreetServiceProcessor) AddToProcessorMap(key string, processor thrift.TProcessorFunction) {
+func (p *GreetHandlerProcessor) AddToProcessorMap(key string, processor thrift.TProcessorFunction) {
 	p.processorMap[key] = processor
 }
 
-func (p *GreetServiceProcessor) GetProcessorFunction(key string) (processor thrift.TProcessorFunction, ok bool) {
+func (p *GreetHandlerProcessor) GetProcessorFunction(key string) (processor thrift.TProcessorFunction, ok bool) {
 	processor, ok = p.processorMap[key]
 	return processor, ok
 }
 
-func (p *GreetServiceProcessor) ProcessorMap() map[string]thrift.TProcessorFunction {
+func (p *GreetHandlerProcessor) ProcessorMap() map[string]thrift.TProcessorFunction {
 	return p.processorMap
 }
 
-func NewGreetServiceProcessor(handler GreetService) *GreetServiceProcessor {
-	self := &GreetServiceProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
-	self.AddToProcessorMap("Greet", &greetServiceProcessorGreet{handler: handler})
+func NewGreetHandlerProcessor(handler GreetHandler) *GreetHandlerProcessor {
+	self := &GreetHandlerProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
+	self.AddToProcessorMap("Greet", &greetHandlerProcessorGreet{handler: handler})
 	return self
 }
-func (p *GreetServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *GreetHandlerProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
 	name, _, seqId, err := iprot.ReadMessageBegin()
 	if err != nil {
 		return false, err
@@ -590,12 +590,12 @@ func (p *GreetServiceProcessor) Process(ctx context.Context, iprot, oprot thrift
 	return false, x
 }
 
-type greetServiceProcessorGreet struct {
-	handler GreetService
+type greetHandlerProcessorGreet struct {
+	handler GreetHandler
 }
 
-func (p *greetServiceProcessorGreet) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := GreetServiceGreetArgs{}
+func (p *greetHandlerProcessorGreet) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := GreetHandlerGreetArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
@@ -608,7 +608,7 @@ func (p *greetServiceProcessorGreet) Process(ctx context.Context, seqId int32, i
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := GreetServiceGreetResult{}
+	result := GreetHandlerGreetResult{}
 	var retval *GreetRes
 	if retval, err2 = p.handler.Greet(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing Greet: "+err2.Error())
@@ -638,32 +638,32 @@ func (p *greetServiceProcessorGreet) Process(ctx context.Context, seqId int32, i
 	return true, err
 }
 
-type GreetServiceGreetArgs struct {
+type GreetHandlerGreetArgs struct {
 	Req *GreetReq `thrift:"req,1"`
 }
 
-func NewGreetServiceGreetArgs() *GreetServiceGreetArgs {
-	return &GreetServiceGreetArgs{}
+func NewGreetHandlerGreetArgs() *GreetHandlerGreetArgs {
+	return &GreetHandlerGreetArgs{}
 }
 
-var GreetServiceGreetArgs_Req_DEFAULT *GreetReq
+var GreetHandlerGreetArgs_Req_DEFAULT *GreetReq
 
-func (p *GreetServiceGreetArgs) GetReq() (v *GreetReq) {
+func (p *GreetHandlerGreetArgs) GetReq() (v *GreetReq) {
 	if !p.IsSetReq() {
-		return GreetServiceGreetArgs_Req_DEFAULT
+		return GreetHandlerGreetArgs_Req_DEFAULT
 	}
 	return p.Req
 }
 
-var fieldIDToName_GreetServiceGreetArgs = map[int16]string{
+var fieldIDToName_GreetHandlerGreetArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *GreetServiceGreetArgs) IsSetReq() bool {
+func (p *GreetHandlerGreetArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *GreetServiceGreetArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *GreetHandlerGreetArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -709,7 +709,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GreetServiceGreetArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GreetHandlerGreetArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -719,7 +719,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *GreetServiceGreetArgs) ReadField1(iprot thrift.TProtocol) error {
+func (p *GreetHandlerGreetArgs) ReadField1(iprot thrift.TProtocol) error {
 	_field := NewGreetReq()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -728,7 +728,7 @@ func (p *GreetServiceGreetArgs) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *GreetServiceGreetArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *GreetHandlerGreetArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("Greet_args"); err != nil {
 		goto WriteStructBeginError
@@ -756,7 +756,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *GreetServiceGreetArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *GreetHandlerGreetArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -773,40 +773,40 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *GreetServiceGreetArgs) String() string {
+func (p *GreetHandlerGreetArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("GreetServiceGreetArgs(%+v)", *p)
+	return fmt.Sprintf("GreetHandlerGreetArgs(%+v)", *p)
 
 }
 
-type GreetServiceGreetResult struct {
+type GreetHandlerGreetResult struct {
 	Success *GreetRes `thrift:"success,0,optional"`
 }
 
-func NewGreetServiceGreetResult() *GreetServiceGreetResult {
-	return &GreetServiceGreetResult{}
+func NewGreetHandlerGreetResult() *GreetHandlerGreetResult {
+	return &GreetHandlerGreetResult{}
 }
 
-var GreetServiceGreetResult_Success_DEFAULT *GreetRes
+var GreetHandlerGreetResult_Success_DEFAULT *GreetRes
 
-func (p *GreetServiceGreetResult) GetSuccess() (v *GreetRes) {
+func (p *GreetHandlerGreetResult) GetSuccess() (v *GreetRes) {
 	if !p.IsSetSuccess() {
-		return GreetServiceGreetResult_Success_DEFAULT
+		return GreetHandlerGreetResult_Success_DEFAULT
 	}
 	return p.Success
 }
 
-var fieldIDToName_GreetServiceGreetResult = map[int16]string{
+var fieldIDToName_GreetHandlerGreetResult = map[int16]string{
 	0: "success",
 }
 
-func (p *GreetServiceGreetResult) IsSetSuccess() bool {
+func (p *GreetHandlerGreetResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *GreetServiceGreetResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *GreetHandlerGreetResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -852,7 +852,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GreetServiceGreetResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GreetHandlerGreetResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -862,7 +862,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *GreetServiceGreetResult) ReadField0(iprot thrift.TProtocol) error {
+func (p *GreetHandlerGreetResult) ReadField0(iprot thrift.TProtocol) error {
 	_field := NewGreetRes()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -871,7 +871,7 @@ func (p *GreetServiceGreetResult) ReadField0(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *GreetServiceGreetResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *GreetHandlerGreetResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("Greet_result"); err != nil {
 		goto WriteStructBeginError
@@ -899,7 +899,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *GreetServiceGreetResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *GreetHandlerGreetResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -918,10 +918,10 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *GreetServiceGreetResult) String() string {
+func (p *GreetHandlerGreetResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("GreetServiceGreetResult(%+v)", *p)
+	return fmt.Sprintf("GreetHandlerGreetResult(%+v)", *p)
 
 }

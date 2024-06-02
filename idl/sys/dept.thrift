@@ -67,7 +67,7 @@ struct QueryItemDeptRes {
     2: required Dept        result
 }
 
-service DeptService {
+service DeptHandler {
     CreateDeptRes       CreateDept(1:       CreateDeptReq       req) (api.post=     "/v1/sys/dept/create")
     UpdateDeptRes       UpdateDept(1:       UpdateDeptReq       req) (api.put=      "/v1/sys/dept/:id")
     DeleteDeptRes       DeleteDept(1:       DeleteDeptReq       req) (api.delete=   "/v1/sys/dept/:id")

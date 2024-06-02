@@ -2992,7 +2992,7 @@ func (p *QueryItemDeptRes) String() string {
 
 }
 
-type DeptService interface {
+type DeptHandler interface {
 	CreateDept(ctx context.Context, req *CreateDeptReq) (r *CreateDeptRes, err error)
 
 	UpdateDept(ctx context.Context, req *UpdateDeptReq) (r *UpdateDeptRes, err error)
@@ -3006,116 +3006,116 @@ type DeptService interface {
 	QueryItemDept(ctx context.Context, req *QueryItemDeptReq) (r *QueryItemDeptRes, err error)
 }
 
-type DeptServiceClient struct {
+type DeptHandlerClient struct {
 	c thrift.TClient
 }
 
-func NewDeptServiceClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *DeptServiceClient {
-	return &DeptServiceClient{
+func NewDeptHandlerClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *DeptHandlerClient {
+	return &DeptHandlerClient{
 		c: thrift.NewTStandardClient(f.GetProtocol(t), f.GetProtocol(t)),
 	}
 }
 
-func NewDeptServiceClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *DeptServiceClient {
-	return &DeptServiceClient{
+func NewDeptHandlerClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *DeptHandlerClient {
+	return &DeptHandlerClient{
 		c: thrift.NewTStandardClient(iprot, oprot),
 	}
 }
 
-func NewDeptServiceClient(c thrift.TClient) *DeptServiceClient {
-	return &DeptServiceClient{
+func NewDeptHandlerClient(c thrift.TClient) *DeptHandlerClient {
+	return &DeptHandlerClient{
 		c: c,
 	}
 }
 
-func (p *DeptServiceClient) Client_() thrift.TClient {
+func (p *DeptHandlerClient) Client_() thrift.TClient {
 	return p.c
 }
 
-func (p *DeptServiceClient) CreateDept(ctx context.Context, req *CreateDeptReq) (r *CreateDeptRes, err error) {
-	var _args DeptServiceCreateDeptArgs
+func (p *DeptHandlerClient) CreateDept(ctx context.Context, req *CreateDeptReq) (r *CreateDeptRes, err error) {
+	var _args DeptHandlerCreateDeptArgs
 	_args.Req = req
-	var _result DeptServiceCreateDeptResult
+	var _result DeptHandlerCreateDeptResult
 	if err = p.Client_().Call(ctx, "CreateDept", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *DeptServiceClient) UpdateDept(ctx context.Context, req *UpdateDeptReq) (r *UpdateDeptRes, err error) {
-	var _args DeptServiceUpdateDeptArgs
+func (p *DeptHandlerClient) UpdateDept(ctx context.Context, req *UpdateDeptReq) (r *UpdateDeptRes, err error) {
+	var _args DeptHandlerUpdateDeptArgs
 	_args.Req = req
-	var _result DeptServiceUpdateDeptResult
+	var _result DeptHandlerUpdateDeptResult
 	if err = p.Client_().Call(ctx, "UpdateDept", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *DeptServiceClient) DeleteDept(ctx context.Context, req *DeleteDeptReq) (r *DeleteDeptRes, err error) {
-	var _args DeptServiceDeleteDeptArgs
+func (p *DeptHandlerClient) DeleteDept(ctx context.Context, req *DeleteDeptReq) (r *DeleteDeptRes, err error) {
+	var _args DeptHandlerDeleteDeptArgs
 	_args.Req = req
-	var _result DeptServiceDeleteDeptResult
+	var _result DeptHandlerDeleteDeptResult
 	if err = p.Client_().Call(ctx, "DeleteDept", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *DeptServiceClient) QueryAllDept(ctx context.Context, req *QueryAllDeptReq) (r *QueryAllDeptRes, err error) {
-	var _args DeptServiceQueryAllDeptArgs
+func (p *DeptHandlerClient) QueryAllDept(ctx context.Context, req *QueryAllDeptReq) (r *QueryAllDeptRes, err error) {
+	var _args DeptHandlerQueryAllDeptArgs
 	_args.Req = req
-	var _result DeptServiceQueryAllDeptResult
+	var _result DeptHandlerQueryAllDeptResult
 	if err = p.Client_().Call(ctx, "QueryAllDept", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *DeptServiceClient) QueryListDept(ctx context.Context, req *QueryListDeptReq) (r *QueryListDeptRes, err error) {
-	var _args DeptServiceQueryListDeptArgs
+func (p *DeptHandlerClient) QueryListDept(ctx context.Context, req *QueryListDeptReq) (r *QueryListDeptRes, err error) {
+	var _args DeptHandlerQueryListDeptArgs
 	_args.Req = req
-	var _result DeptServiceQueryListDeptResult
+	var _result DeptHandlerQueryListDeptResult
 	if err = p.Client_().Call(ctx, "QueryListDept", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *DeptServiceClient) QueryItemDept(ctx context.Context, req *QueryItemDeptReq) (r *QueryItemDeptRes, err error) {
-	var _args DeptServiceQueryItemDeptArgs
+func (p *DeptHandlerClient) QueryItemDept(ctx context.Context, req *QueryItemDeptReq) (r *QueryItemDeptRes, err error) {
+	var _args DeptHandlerQueryItemDeptArgs
 	_args.Req = req
-	var _result DeptServiceQueryItemDeptResult
+	var _result DeptHandlerQueryItemDeptResult
 	if err = p.Client_().Call(ctx, "QueryItemDept", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
 }
 
-type DeptServiceProcessor struct {
+type DeptHandlerProcessor struct {
 	processorMap map[string]thrift.TProcessorFunction
-	handler      DeptService
+	handler      DeptHandler
 }
 
-func (p *DeptServiceProcessor) AddToProcessorMap(key string, processor thrift.TProcessorFunction) {
+func (p *DeptHandlerProcessor) AddToProcessorMap(key string, processor thrift.TProcessorFunction) {
 	p.processorMap[key] = processor
 }
 
-func (p *DeptServiceProcessor) GetProcessorFunction(key string) (processor thrift.TProcessorFunction, ok bool) {
+func (p *DeptHandlerProcessor) GetProcessorFunction(key string) (processor thrift.TProcessorFunction, ok bool) {
 	processor, ok = p.processorMap[key]
 	return processor, ok
 }
 
-func (p *DeptServiceProcessor) ProcessorMap() map[string]thrift.TProcessorFunction {
+func (p *DeptHandlerProcessor) ProcessorMap() map[string]thrift.TProcessorFunction {
 	return p.processorMap
 }
 
-func NewDeptServiceProcessor(handler DeptService) *DeptServiceProcessor {
-	self := &DeptServiceProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
-	self.AddToProcessorMap("CreateDept", &deptServiceProcessorCreateDept{handler: handler})
-	self.AddToProcessorMap("UpdateDept", &deptServiceProcessorUpdateDept{handler: handler})
-	self.AddToProcessorMap("DeleteDept", &deptServiceProcessorDeleteDept{handler: handler})
-	self.AddToProcessorMap("QueryAllDept", &deptServiceProcessorQueryAllDept{handler: handler})
-	self.AddToProcessorMap("QueryListDept", &deptServiceProcessorQueryListDept{handler: handler})
-	self.AddToProcessorMap("QueryItemDept", &deptServiceProcessorQueryItemDept{handler: handler})
+func NewDeptHandlerProcessor(handler DeptHandler) *DeptHandlerProcessor {
+	self := &DeptHandlerProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
+	self.AddToProcessorMap("CreateDept", &deptHandlerProcessorCreateDept{handler: handler})
+	self.AddToProcessorMap("UpdateDept", &deptHandlerProcessorUpdateDept{handler: handler})
+	self.AddToProcessorMap("DeleteDept", &deptHandlerProcessorDeleteDept{handler: handler})
+	self.AddToProcessorMap("QueryAllDept", &deptHandlerProcessorQueryAllDept{handler: handler})
+	self.AddToProcessorMap("QueryListDept", &deptHandlerProcessorQueryListDept{handler: handler})
+	self.AddToProcessorMap("QueryItemDept", &deptHandlerProcessorQueryItemDept{handler: handler})
 	return self
 }
-func (p *DeptServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *DeptHandlerProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
 	name, _, seqId, err := iprot.ReadMessageBegin()
 	if err != nil {
 		return false, err
@@ -3133,12 +3133,12 @@ func (p *DeptServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.
 	return false, x
 }
 
-type deptServiceProcessorCreateDept struct {
-	handler DeptService
+type deptHandlerProcessorCreateDept struct {
+	handler DeptHandler
 }
 
-func (p *deptServiceProcessorCreateDept) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := DeptServiceCreateDeptArgs{}
+func (p *deptHandlerProcessorCreateDept) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := DeptHandlerCreateDeptArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
@@ -3151,7 +3151,7 @@ func (p *deptServiceProcessorCreateDept) Process(ctx context.Context, seqId int3
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := DeptServiceCreateDeptResult{}
+	result := DeptHandlerCreateDeptResult{}
 	var retval *CreateDeptRes
 	if retval, err2 = p.handler.CreateDept(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing CreateDept: "+err2.Error())
@@ -3181,12 +3181,12 @@ func (p *deptServiceProcessorCreateDept) Process(ctx context.Context, seqId int3
 	return true, err
 }
 
-type deptServiceProcessorUpdateDept struct {
-	handler DeptService
+type deptHandlerProcessorUpdateDept struct {
+	handler DeptHandler
 }
 
-func (p *deptServiceProcessorUpdateDept) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := DeptServiceUpdateDeptArgs{}
+func (p *deptHandlerProcessorUpdateDept) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := DeptHandlerUpdateDeptArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
@@ -3199,7 +3199,7 @@ func (p *deptServiceProcessorUpdateDept) Process(ctx context.Context, seqId int3
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := DeptServiceUpdateDeptResult{}
+	result := DeptHandlerUpdateDeptResult{}
 	var retval *UpdateDeptRes
 	if retval, err2 = p.handler.UpdateDept(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing UpdateDept: "+err2.Error())
@@ -3229,12 +3229,12 @@ func (p *deptServiceProcessorUpdateDept) Process(ctx context.Context, seqId int3
 	return true, err
 }
 
-type deptServiceProcessorDeleteDept struct {
-	handler DeptService
+type deptHandlerProcessorDeleteDept struct {
+	handler DeptHandler
 }
 
-func (p *deptServiceProcessorDeleteDept) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := DeptServiceDeleteDeptArgs{}
+func (p *deptHandlerProcessorDeleteDept) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := DeptHandlerDeleteDeptArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
@@ -3247,7 +3247,7 @@ func (p *deptServiceProcessorDeleteDept) Process(ctx context.Context, seqId int3
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := DeptServiceDeleteDeptResult{}
+	result := DeptHandlerDeleteDeptResult{}
 	var retval *DeleteDeptRes
 	if retval, err2 = p.handler.DeleteDept(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing DeleteDept: "+err2.Error())
@@ -3277,12 +3277,12 @@ func (p *deptServiceProcessorDeleteDept) Process(ctx context.Context, seqId int3
 	return true, err
 }
 
-type deptServiceProcessorQueryAllDept struct {
-	handler DeptService
+type deptHandlerProcessorQueryAllDept struct {
+	handler DeptHandler
 }
 
-func (p *deptServiceProcessorQueryAllDept) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := DeptServiceQueryAllDeptArgs{}
+func (p *deptHandlerProcessorQueryAllDept) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := DeptHandlerQueryAllDeptArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
@@ -3295,7 +3295,7 @@ func (p *deptServiceProcessorQueryAllDept) Process(ctx context.Context, seqId in
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := DeptServiceQueryAllDeptResult{}
+	result := DeptHandlerQueryAllDeptResult{}
 	var retval *QueryAllDeptRes
 	if retval, err2 = p.handler.QueryAllDept(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing QueryAllDept: "+err2.Error())
@@ -3325,12 +3325,12 @@ func (p *deptServiceProcessorQueryAllDept) Process(ctx context.Context, seqId in
 	return true, err
 }
 
-type deptServiceProcessorQueryListDept struct {
-	handler DeptService
+type deptHandlerProcessorQueryListDept struct {
+	handler DeptHandler
 }
 
-func (p *deptServiceProcessorQueryListDept) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := DeptServiceQueryListDeptArgs{}
+func (p *deptHandlerProcessorQueryListDept) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := DeptHandlerQueryListDeptArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
@@ -3343,7 +3343,7 @@ func (p *deptServiceProcessorQueryListDept) Process(ctx context.Context, seqId i
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := DeptServiceQueryListDeptResult{}
+	result := DeptHandlerQueryListDeptResult{}
 	var retval *QueryListDeptRes
 	if retval, err2 = p.handler.QueryListDept(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing QueryListDept: "+err2.Error())
@@ -3373,12 +3373,12 @@ func (p *deptServiceProcessorQueryListDept) Process(ctx context.Context, seqId i
 	return true, err
 }
 
-type deptServiceProcessorQueryItemDept struct {
-	handler DeptService
+type deptHandlerProcessorQueryItemDept struct {
+	handler DeptHandler
 }
 
-func (p *deptServiceProcessorQueryItemDept) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := DeptServiceQueryItemDeptArgs{}
+func (p *deptHandlerProcessorQueryItemDept) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := DeptHandlerQueryItemDeptArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
@@ -3391,7 +3391,7 @@ func (p *deptServiceProcessorQueryItemDept) Process(ctx context.Context, seqId i
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := DeptServiceQueryItemDeptResult{}
+	result := DeptHandlerQueryItemDeptResult{}
 	var retval *QueryItemDeptRes
 	if retval, err2 = p.handler.QueryItemDept(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing QueryItemDept: "+err2.Error())
@@ -3421,32 +3421,32 @@ func (p *deptServiceProcessorQueryItemDept) Process(ctx context.Context, seqId i
 	return true, err
 }
 
-type DeptServiceCreateDeptArgs struct {
+type DeptHandlerCreateDeptArgs struct {
 	Req *CreateDeptReq `thrift:"req,1"`
 }
 
-func NewDeptServiceCreateDeptArgs() *DeptServiceCreateDeptArgs {
-	return &DeptServiceCreateDeptArgs{}
+func NewDeptHandlerCreateDeptArgs() *DeptHandlerCreateDeptArgs {
+	return &DeptHandlerCreateDeptArgs{}
 }
 
-var DeptServiceCreateDeptArgs_Req_DEFAULT *CreateDeptReq
+var DeptHandlerCreateDeptArgs_Req_DEFAULT *CreateDeptReq
 
-func (p *DeptServiceCreateDeptArgs) GetReq() (v *CreateDeptReq) {
+func (p *DeptHandlerCreateDeptArgs) GetReq() (v *CreateDeptReq) {
 	if !p.IsSetReq() {
-		return DeptServiceCreateDeptArgs_Req_DEFAULT
+		return DeptHandlerCreateDeptArgs_Req_DEFAULT
 	}
 	return p.Req
 }
 
-var fieldIDToName_DeptServiceCreateDeptArgs = map[int16]string{
+var fieldIDToName_DeptHandlerCreateDeptArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *DeptServiceCreateDeptArgs) IsSetReq() bool {
+func (p *DeptHandlerCreateDeptArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *DeptServiceCreateDeptArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerCreateDeptArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -3492,7 +3492,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptServiceCreateDeptArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptHandlerCreateDeptArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -3502,7 +3502,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *DeptServiceCreateDeptArgs) ReadField1(iprot thrift.TProtocol) error {
+func (p *DeptHandlerCreateDeptArgs) ReadField1(iprot thrift.TProtocol) error {
 	_field := NewCreateDeptReq()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -3511,7 +3511,7 @@ func (p *DeptServiceCreateDeptArgs) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *DeptServiceCreateDeptArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerCreateDeptArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("CreateDept_args"); err != nil {
 		goto WriteStructBeginError
@@ -3539,7 +3539,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *DeptServiceCreateDeptArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerCreateDeptArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -3556,40 +3556,40 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *DeptServiceCreateDeptArgs) String() string {
+func (p *DeptHandlerCreateDeptArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("DeptServiceCreateDeptArgs(%+v)", *p)
+	return fmt.Sprintf("DeptHandlerCreateDeptArgs(%+v)", *p)
 
 }
 
-type DeptServiceCreateDeptResult struct {
+type DeptHandlerCreateDeptResult struct {
 	Success *CreateDeptRes `thrift:"success,0,optional"`
 }
 
-func NewDeptServiceCreateDeptResult() *DeptServiceCreateDeptResult {
-	return &DeptServiceCreateDeptResult{}
+func NewDeptHandlerCreateDeptResult() *DeptHandlerCreateDeptResult {
+	return &DeptHandlerCreateDeptResult{}
 }
 
-var DeptServiceCreateDeptResult_Success_DEFAULT *CreateDeptRes
+var DeptHandlerCreateDeptResult_Success_DEFAULT *CreateDeptRes
 
-func (p *DeptServiceCreateDeptResult) GetSuccess() (v *CreateDeptRes) {
+func (p *DeptHandlerCreateDeptResult) GetSuccess() (v *CreateDeptRes) {
 	if !p.IsSetSuccess() {
-		return DeptServiceCreateDeptResult_Success_DEFAULT
+		return DeptHandlerCreateDeptResult_Success_DEFAULT
 	}
 	return p.Success
 }
 
-var fieldIDToName_DeptServiceCreateDeptResult = map[int16]string{
+var fieldIDToName_DeptHandlerCreateDeptResult = map[int16]string{
 	0: "success",
 }
 
-func (p *DeptServiceCreateDeptResult) IsSetSuccess() bool {
+func (p *DeptHandlerCreateDeptResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *DeptServiceCreateDeptResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerCreateDeptResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -3635,7 +3635,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptServiceCreateDeptResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptHandlerCreateDeptResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -3645,7 +3645,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *DeptServiceCreateDeptResult) ReadField0(iprot thrift.TProtocol) error {
+func (p *DeptHandlerCreateDeptResult) ReadField0(iprot thrift.TProtocol) error {
 	_field := NewCreateDeptRes()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -3654,7 +3654,7 @@ func (p *DeptServiceCreateDeptResult) ReadField0(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *DeptServiceCreateDeptResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerCreateDeptResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("CreateDept_result"); err != nil {
 		goto WriteStructBeginError
@@ -3682,7 +3682,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *DeptServiceCreateDeptResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerCreateDeptResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -3701,40 +3701,40 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *DeptServiceCreateDeptResult) String() string {
+func (p *DeptHandlerCreateDeptResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("DeptServiceCreateDeptResult(%+v)", *p)
+	return fmt.Sprintf("DeptHandlerCreateDeptResult(%+v)", *p)
 
 }
 
-type DeptServiceUpdateDeptArgs struct {
+type DeptHandlerUpdateDeptArgs struct {
 	Req *UpdateDeptReq `thrift:"req,1"`
 }
 
-func NewDeptServiceUpdateDeptArgs() *DeptServiceUpdateDeptArgs {
-	return &DeptServiceUpdateDeptArgs{}
+func NewDeptHandlerUpdateDeptArgs() *DeptHandlerUpdateDeptArgs {
+	return &DeptHandlerUpdateDeptArgs{}
 }
 
-var DeptServiceUpdateDeptArgs_Req_DEFAULT *UpdateDeptReq
+var DeptHandlerUpdateDeptArgs_Req_DEFAULT *UpdateDeptReq
 
-func (p *DeptServiceUpdateDeptArgs) GetReq() (v *UpdateDeptReq) {
+func (p *DeptHandlerUpdateDeptArgs) GetReq() (v *UpdateDeptReq) {
 	if !p.IsSetReq() {
-		return DeptServiceUpdateDeptArgs_Req_DEFAULT
+		return DeptHandlerUpdateDeptArgs_Req_DEFAULT
 	}
 	return p.Req
 }
 
-var fieldIDToName_DeptServiceUpdateDeptArgs = map[int16]string{
+var fieldIDToName_DeptHandlerUpdateDeptArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *DeptServiceUpdateDeptArgs) IsSetReq() bool {
+func (p *DeptHandlerUpdateDeptArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *DeptServiceUpdateDeptArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerUpdateDeptArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -3780,7 +3780,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptServiceUpdateDeptArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptHandlerUpdateDeptArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -3790,7 +3790,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *DeptServiceUpdateDeptArgs) ReadField1(iprot thrift.TProtocol) error {
+func (p *DeptHandlerUpdateDeptArgs) ReadField1(iprot thrift.TProtocol) error {
 	_field := NewUpdateDeptReq()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -3799,7 +3799,7 @@ func (p *DeptServiceUpdateDeptArgs) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *DeptServiceUpdateDeptArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerUpdateDeptArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("UpdateDept_args"); err != nil {
 		goto WriteStructBeginError
@@ -3827,7 +3827,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *DeptServiceUpdateDeptArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerUpdateDeptArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -3844,40 +3844,40 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *DeptServiceUpdateDeptArgs) String() string {
+func (p *DeptHandlerUpdateDeptArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("DeptServiceUpdateDeptArgs(%+v)", *p)
+	return fmt.Sprintf("DeptHandlerUpdateDeptArgs(%+v)", *p)
 
 }
 
-type DeptServiceUpdateDeptResult struct {
+type DeptHandlerUpdateDeptResult struct {
 	Success *UpdateDeptRes `thrift:"success,0,optional"`
 }
 
-func NewDeptServiceUpdateDeptResult() *DeptServiceUpdateDeptResult {
-	return &DeptServiceUpdateDeptResult{}
+func NewDeptHandlerUpdateDeptResult() *DeptHandlerUpdateDeptResult {
+	return &DeptHandlerUpdateDeptResult{}
 }
 
-var DeptServiceUpdateDeptResult_Success_DEFAULT *UpdateDeptRes
+var DeptHandlerUpdateDeptResult_Success_DEFAULT *UpdateDeptRes
 
-func (p *DeptServiceUpdateDeptResult) GetSuccess() (v *UpdateDeptRes) {
+func (p *DeptHandlerUpdateDeptResult) GetSuccess() (v *UpdateDeptRes) {
 	if !p.IsSetSuccess() {
-		return DeptServiceUpdateDeptResult_Success_DEFAULT
+		return DeptHandlerUpdateDeptResult_Success_DEFAULT
 	}
 	return p.Success
 }
 
-var fieldIDToName_DeptServiceUpdateDeptResult = map[int16]string{
+var fieldIDToName_DeptHandlerUpdateDeptResult = map[int16]string{
 	0: "success",
 }
 
-func (p *DeptServiceUpdateDeptResult) IsSetSuccess() bool {
+func (p *DeptHandlerUpdateDeptResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *DeptServiceUpdateDeptResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerUpdateDeptResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -3923,7 +3923,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptServiceUpdateDeptResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptHandlerUpdateDeptResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -3933,7 +3933,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *DeptServiceUpdateDeptResult) ReadField0(iprot thrift.TProtocol) error {
+func (p *DeptHandlerUpdateDeptResult) ReadField0(iprot thrift.TProtocol) error {
 	_field := NewUpdateDeptRes()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -3942,7 +3942,7 @@ func (p *DeptServiceUpdateDeptResult) ReadField0(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *DeptServiceUpdateDeptResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerUpdateDeptResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("UpdateDept_result"); err != nil {
 		goto WriteStructBeginError
@@ -3970,7 +3970,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *DeptServiceUpdateDeptResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerUpdateDeptResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -3989,40 +3989,40 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *DeptServiceUpdateDeptResult) String() string {
+func (p *DeptHandlerUpdateDeptResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("DeptServiceUpdateDeptResult(%+v)", *p)
+	return fmt.Sprintf("DeptHandlerUpdateDeptResult(%+v)", *p)
 
 }
 
-type DeptServiceDeleteDeptArgs struct {
+type DeptHandlerDeleteDeptArgs struct {
 	Req *DeleteDeptReq `thrift:"req,1"`
 }
 
-func NewDeptServiceDeleteDeptArgs() *DeptServiceDeleteDeptArgs {
-	return &DeptServiceDeleteDeptArgs{}
+func NewDeptHandlerDeleteDeptArgs() *DeptHandlerDeleteDeptArgs {
+	return &DeptHandlerDeleteDeptArgs{}
 }
 
-var DeptServiceDeleteDeptArgs_Req_DEFAULT *DeleteDeptReq
+var DeptHandlerDeleteDeptArgs_Req_DEFAULT *DeleteDeptReq
 
-func (p *DeptServiceDeleteDeptArgs) GetReq() (v *DeleteDeptReq) {
+func (p *DeptHandlerDeleteDeptArgs) GetReq() (v *DeleteDeptReq) {
 	if !p.IsSetReq() {
-		return DeptServiceDeleteDeptArgs_Req_DEFAULT
+		return DeptHandlerDeleteDeptArgs_Req_DEFAULT
 	}
 	return p.Req
 }
 
-var fieldIDToName_DeptServiceDeleteDeptArgs = map[int16]string{
+var fieldIDToName_DeptHandlerDeleteDeptArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *DeptServiceDeleteDeptArgs) IsSetReq() bool {
+func (p *DeptHandlerDeleteDeptArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *DeptServiceDeleteDeptArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerDeleteDeptArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -4068,7 +4068,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptServiceDeleteDeptArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptHandlerDeleteDeptArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -4078,7 +4078,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *DeptServiceDeleteDeptArgs) ReadField1(iprot thrift.TProtocol) error {
+func (p *DeptHandlerDeleteDeptArgs) ReadField1(iprot thrift.TProtocol) error {
 	_field := NewDeleteDeptReq()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -4087,7 +4087,7 @@ func (p *DeptServiceDeleteDeptArgs) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *DeptServiceDeleteDeptArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerDeleteDeptArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("DeleteDept_args"); err != nil {
 		goto WriteStructBeginError
@@ -4115,7 +4115,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *DeptServiceDeleteDeptArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerDeleteDeptArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -4132,40 +4132,40 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *DeptServiceDeleteDeptArgs) String() string {
+func (p *DeptHandlerDeleteDeptArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("DeptServiceDeleteDeptArgs(%+v)", *p)
+	return fmt.Sprintf("DeptHandlerDeleteDeptArgs(%+v)", *p)
 
 }
 
-type DeptServiceDeleteDeptResult struct {
+type DeptHandlerDeleteDeptResult struct {
 	Success *DeleteDeptRes `thrift:"success,0,optional"`
 }
 
-func NewDeptServiceDeleteDeptResult() *DeptServiceDeleteDeptResult {
-	return &DeptServiceDeleteDeptResult{}
+func NewDeptHandlerDeleteDeptResult() *DeptHandlerDeleteDeptResult {
+	return &DeptHandlerDeleteDeptResult{}
 }
 
-var DeptServiceDeleteDeptResult_Success_DEFAULT *DeleteDeptRes
+var DeptHandlerDeleteDeptResult_Success_DEFAULT *DeleteDeptRes
 
-func (p *DeptServiceDeleteDeptResult) GetSuccess() (v *DeleteDeptRes) {
+func (p *DeptHandlerDeleteDeptResult) GetSuccess() (v *DeleteDeptRes) {
 	if !p.IsSetSuccess() {
-		return DeptServiceDeleteDeptResult_Success_DEFAULT
+		return DeptHandlerDeleteDeptResult_Success_DEFAULT
 	}
 	return p.Success
 }
 
-var fieldIDToName_DeptServiceDeleteDeptResult = map[int16]string{
+var fieldIDToName_DeptHandlerDeleteDeptResult = map[int16]string{
 	0: "success",
 }
 
-func (p *DeptServiceDeleteDeptResult) IsSetSuccess() bool {
+func (p *DeptHandlerDeleteDeptResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *DeptServiceDeleteDeptResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerDeleteDeptResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -4211,7 +4211,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptServiceDeleteDeptResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptHandlerDeleteDeptResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -4221,7 +4221,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *DeptServiceDeleteDeptResult) ReadField0(iprot thrift.TProtocol) error {
+func (p *DeptHandlerDeleteDeptResult) ReadField0(iprot thrift.TProtocol) error {
 	_field := NewDeleteDeptRes()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -4230,7 +4230,7 @@ func (p *DeptServiceDeleteDeptResult) ReadField0(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *DeptServiceDeleteDeptResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerDeleteDeptResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("DeleteDept_result"); err != nil {
 		goto WriteStructBeginError
@@ -4258,7 +4258,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *DeptServiceDeleteDeptResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerDeleteDeptResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -4277,40 +4277,40 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *DeptServiceDeleteDeptResult) String() string {
+func (p *DeptHandlerDeleteDeptResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("DeptServiceDeleteDeptResult(%+v)", *p)
+	return fmt.Sprintf("DeptHandlerDeleteDeptResult(%+v)", *p)
 
 }
 
-type DeptServiceQueryAllDeptArgs struct {
+type DeptHandlerQueryAllDeptArgs struct {
 	Req *QueryAllDeptReq `thrift:"req,1"`
 }
 
-func NewDeptServiceQueryAllDeptArgs() *DeptServiceQueryAllDeptArgs {
-	return &DeptServiceQueryAllDeptArgs{}
+func NewDeptHandlerQueryAllDeptArgs() *DeptHandlerQueryAllDeptArgs {
+	return &DeptHandlerQueryAllDeptArgs{}
 }
 
-var DeptServiceQueryAllDeptArgs_Req_DEFAULT *QueryAllDeptReq
+var DeptHandlerQueryAllDeptArgs_Req_DEFAULT *QueryAllDeptReq
 
-func (p *DeptServiceQueryAllDeptArgs) GetReq() (v *QueryAllDeptReq) {
+func (p *DeptHandlerQueryAllDeptArgs) GetReq() (v *QueryAllDeptReq) {
 	if !p.IsSetReq() {
-		return DeptServiceQueryAllDeptArgs_Req_DEFAULT
+		return DeptHandlerQueryAllDeptArgs_Req_DEFAULT
 	}
 	return p.Req
 }
 
-var fieldIDToName_DeptServiceQueryAllDeptArgs = map[int16]string{
+var fieldIDToName_DeptHandlerQueryAllDeptArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *DeptServiceQueryAllDeptArgs) IsSetReq() bool {
+func (p *DeptHandlerQueryAllDeptArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *DeptServiceQueryAllDeptArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerQueryAllDeptArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -4356,7 +4356,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptServiceQueryAllDeptArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptHandlerQueryAllDeptArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -4366,7 +4366,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *DeptServiceQueryAllDeptArgs) ReadField1(iprot thrift.TProtocol) error {
+func (p *DeptHandlerQueryAllDeptArgs) ReadField1(iprot thrift.TProtocol) error {
 	_field := NewQueryAllDeptReq()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -4375,7 +4375,7 @@ func (p *DeptServiceQueryAllDeptArgs) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *DeptServiceQueryAllDeptArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerQueryAllDeptArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("QueryAllDept_args"); err != nil {
 		goto WriteStructBeginError
@@ -4403,7 +4403,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *DeptServiceQueryAllDeptArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerQueryAllDeptArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -4420,40 +4420,40 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *DeptServiceQueryAllDeptArgs) String() string {
+func (p *DeptHandlerQueryAllDeptArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("DeptServiceQueryAllDeptArgs(%+v)", *p)
+	return fmt.Sprintf("DeptHandlerQueryAllDeptArgs(%+v)", *p)
 
 }
 
-type DeptServiceQueryAllDeptResult struct {
+type DeptHandlerQueryAllDeptResult struct {
 	Success *QueryAllDeptRes `thrift:"success,0,optional"`
 }
 
-func NewDeptServiceQueryAllDeptResult() *DeptServiceQueryAllDeptResult {
-	return &DeptServiceQueryAllDeptResult{}
+func NewDeptHandlerQueryAllDeptResult() *DeptHandlerQueryAllDeptResult {
+	return &DeptHandlerQueryAllDeptResult{}
 }
 
-var DeptServiceQueryAllDeptResult_Success_DEFAULT *QueryAllDeptRes
+var DeptHandlerQueryAllDeptResult_Success_DEFAULT *QueryAllDeptRes
 
-func (p *DeptServiceQueryAllDeptResult) GetSuccess() (v *QueryAllDeptRes) {
+func (p *DeptHandlerQueryAllDeptResult) GetSuccess() (v *QueryAllDeptRes) {
 	if !p.IsSetSuccess() {
-		return DeptServiceQueryAllDeptResult_Success_DEFAULT
+		return DeptHandlerQueryAllDeptResult_Success_DEFAULT
 	}
 	return p.Success
 }
 
-var fieldIDToName_DeptServiceQueryAllDeptResult = map[int16]string{
+var fieldIDToName_DeptHandlerQueryAllDeptResult = map[int16]string{
 	0: "success",
 }
 
-func (p *DeptServiceQueryAllDeptResult) IsSetSuccess() bool {
+func (p *DeptHandlerQueryAllDeptResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *DeptServiceQueryAllDeptResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerQueryAllDeptResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -4499,7 +4499,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptServiceQueryAllDeptResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptHandlerQueryAllDeptResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -4509,7 +4509,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *DeptServiceQueryAllDeptResult) ReadField0(iprot thrift.TProtocol) error {
+func (p *DeptHandlerQueryAllDeptResult) ReadField0(iprot thrift.TProtocol) error {
 	_field := NewQueryAllDeptRes()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -4518,7 +4518,7 @@ func (p *DeptServiceQueryAllDeptResult) ReadField0(iprot thrift.TProtocol) error
 	return nil
 }
 
-func (p *DeptServiceQueryAllDeptResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerQueryAllDeptResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("QueryAllDept_result"); err != nil {
 		goto WriteStructBeginError
@@ -4546,7 +4546,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *DeptServiceQueryAllDeptResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerQueryAllDeptResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -4565,40 +4565,40 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *DeptServiceQueryAllDeptResult) String() string {
+func (p *DeptHandlerQueryAllDeptResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("DeptServiceQueryAllDeptResult(%+v)", *p)
+	return fmt.Sprintf("DeptHandlerQueryAllDeptResult(%+v)", *p)
 
 }
 
-type DeptServiceQueryListDeptArgs struct {
+type DeptHandlerQueryListDeptArgs struct {
 	Req *QueryListDeptReq `thrift:"req,1"`
 }
 
-func NewDeptServiceQueryListDeptArgs() *DeptServiceQueryListDeptArgs {
-	return &DeptServiceQueryListDeptArgs{}
+func NewDeptHandlerQueryListDeptArgs() *DeptHandlerQueryListDeptArgs {
+	return &DeptHandlerQueryListDeptArgs{}
 }
 
-var DeptServiceQueryListDeptArgs_Req_DEFAULT *QueryListDeptReq
+var DeptHandlerQueryListDeptArgs_Req_DEFAULT *QueryListDeptReq
 
-func (p *DeptServiceQueryListDeptArgs) GetReq() (v *QueryListDeptReq) {
+func (p *DeptHandlerQueryListDeptArgs) GetReq() (v *QueryListDeptReq) {
 	if !p.IsSetReq() {
-		return DeptServiceQueryListDeptArgs_Req_DEFAULT
+		return DeptHandlerQueryListDeptArgs_Req_DEFAULT
 	}
 	return p.Req
 }
 
-var fieldIDToName_DeptServiceQueryListDeptArgs = map[int16]string{
+var fieldIDToName_DeptHandlerQueryListDeptArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *DeptServiceQueryListDeptArgs) IsSetReq() bool {
+func (p *DeptHandlerQueryListDeptArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *DeptServiceQueryListDeptArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerQueryListDeptArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -4644,7 +4644,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptServiceQueryListDeptArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptHandlerQueryListDeptArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -4654,7 +4654,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *DeptServiceQueryListDeptArgs) ReadField1(iprot thrift.TProtocol) error {
+func (p *DeptHandlerQueryListDeptArgs) ReadField1(iprot thrift.TProtocol) error {
 	_field := NewQueryListDeptReq()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -4663,7 +4663,7 @@ func (p *DeptServiceQueryListDeptArgs) ReadField1(iprot thrift.TProtocol) error 
 	return nil
 }
 
-func (p *DeptServiceQueryListDeptArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerQueryListDeptArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("QueryListDept_args"); err != nil {
 		goto WriteStructBeginError
@@ -4691,7 +4691,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *DeptServiceQueryListDeptArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerQueryListDeptArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -4708,40 +4708,40 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *DeptServiceQueryListDeptArgs) String() string {
+func (p *DeptHandlerQueryListDeptArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("DeptServiceQueryListDeptArgs(%+v)", *p)
+	return fmt.Sprintf("DeptHandlerQueryListDeptArgs(%+v)", *p)
 
 }
 
-type DeptServiceQueryListDeptResult struct {
+type DeptHandlerQueryListDeptResult struct {
 	Success *QueryListDeptRes `thrift:"success,0,optional"`
 }
 
-func NewDeptServiceQueryListDeptResult() *DeptServiceQueryListDeptResult {
-	return &DeptServiceQueryListDeptResult{}
+func NewDeptHandlerQueryListDeptResult() *DeptHandlerQueryListDeptResult {
+	return &DeptHandlerQueryListDeptResult{}
 }
 
-var DeptServiceQueryListDeptResult_Success_DEFAULT *QueryListDeptRes
+var DeptHandlerQueryListDeptResult_Success_DEFAULT *QueryListDeptRes
 
-func (p *DeptServiceQueryListDeptResult) GetSuccess() (v *QueryListDeptRes) {
+func (p *DeptHandlerQueryListDeptResult) GetSuccess() (v *QueryListDeptRes) {
 	if !p.IsSetSuccess() {
-		return DeptServiceQueryListDeptResult_Success_DEFAULT
+		return DeptHandlerQueryListDeptResult_Success_DEFAULT
 	}
 	return p.Success
 }
 
-var fieldIDToName_DeptServiceQueryListDeptResult = map[int16]string{
+var fieldIDToName_DeptHandlerQueryListDeptResult = map[int16]string{
 	0: "success",
 }
 
-func (p *DeptServiceQueryListDeptResult) IsSetSuccess() bool {
+func (p *DeptHandlerQueryListDeptResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *DeptServiceQueryListDeptResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerQueryListDeptResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -4787,7 +4787,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptServiceQueryListDeptResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptHandlerQueryListDeptResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -4797,7 +4797,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *DeptServiceQueryListDeptResult) ReadField0(iprot thrift.TProtocol) error {
+func (p *DeptHandlerQueryListDeptResult) ReadField0(iprot thrift.TProtocol) error {
 	_field := NewQueryListDeptRes()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -4806,7 +4806,7 @@ func (p *DeptServiceQueryListDeptResult) ReadField0(iprot thrift.TProtocol) erro
 	return nil
 }
 
-func (p *DeptServiceQueryListDeptResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerQueryListDeptResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("QueryListDept_result"); err != nil {
 		goto WriteStructBeginError
@@ -4834,7 +4834,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *DeptServiceQueryListDeptResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerQueryListDeptResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -4853,40 +4853,40 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *DeptServiceQueryListDeptResult) String() string {
+func (p *DeptHandlerQueryListDeptResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("DeptServiceQueryListDeptResult(%+v)", *p)
+	return fmt.Sprintf("DeptHandlerQueryListDeptResult(%+v)", *p)
 
 }
 
-type DeptServiceQueryItemDeptArgs struct {
+type DeptHandlerQueryItemDeptArgs struct {
 	Req *QueryItemDeptReq `thrift:"req,1"`
 }
 
-func NewDeptServiceQueryItemDeptArgs() *DeptServiceQueryItemDeptArgs {
-	return &DeptServiceQueryItemDeptArgs{}
+func NewDeptHandlerQueryItemDeptArgs() *DeptHandlerQueryItemDeptArgs {
+	return &DeptHandlerQueryItemDeptArgs{}
 }
 
-var DeptServiceQueryItemDeptArgs_Req_DEFAULT *QueryItemDeptReq
+var DeptHandlerQueryItemDeptArgs_Req_DEFAULT *QueryItemDeptReq
 
-func (p *DeptServiceQueryItemDeptArgs) GetReq() (v *QueryItemDeptReq) {
+func (p *DeptHandlerQueryItemDeptArgs) GetReq() (v *QueryItemDeptReq) {
 	if !p.IsSetReq() {
-		return DeptServiceQueryItemDeptArgs_Req_DEFAULT
+		return DeptHandlerQueryItemDeptArgs_Req_DEFAULT
 	}
 	return p.Req
 }
 
-var fieldIDToName_DeptServiceQueryItemDeptArgs = map[int16]string{
+var fieldIDToName_DeptHandlerQueryItemDeptArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *DeptServiceQueryItemDeptArgs) IsSetReq() bool {
+func (p *DeptHandlerQueryItemDeptArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *DeptServiceQueryItemDeptArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerQueryItemDeptArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -4932,7 +4932,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptServiceQueryItemDeptArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptHandlerQueryItemDeptArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -4942,7 +4942,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *DeptServiceQueryItemDeptArgs) ReadField1(iprot thrift.TProtocol) error {
+func (p *DeptHandlerQueryItemDeptArgs) ReadField1(iprot thrift.TProtocol) error {
 	_field := NewQueryItemDeptReq()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -4951,7 +4951,7 @@ func (p *DeptServiceQueryItemDeptArgs) ReadField1(iprot thrift.TProtocol) error 
 	return nil
 }
 
-func (p *DeptServiceQueryItemDeptArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerQueryItemDeptArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("QueryItemDept_args"); err != nil {
 		goto WriteStructBeginError
@@ -4979,7 +4979,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *DeptServiceQueryItemDeptArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerQueryItemDeptArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -4996,40 +4996,40 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *DeptServiceQueryItemDeptArgs) String() string {
+func (p *DeptHandlerQueryItemDeptArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("DeptServiceQueryItemDeptArgs(%+v)", *p)
+	return fmt.Sprintf("DeptHandlerQueryItemDeptArgs(%+v)", *p)
 
 }
 
-type DeptServiceQueryItemDeptResult struct {
+type DeptHandlerQueryItemDeptResult struct {
 	Success *QueryItemDeptRes `thrift:"success,0,optional"`
 }
 
-func NewDeptServiceQueryItemDeptResult() *DeptServiceQueryItemDeptResult {
-	return &DeptServiceQueryItemDeptResult{}
+func NewDeptHandlerQueryItemDeptResult() *DeptHandlerQueryItemDeptResult {
+	return &DeptHandlerQueryItemDeptResult{}
 }
 
-var DeptServiceQueryItemDeptResult_Success_DEFAULT *QueryItemDeptRes
+var DeptHandlerQueryItemDeptResult_Success_DEFAULT *QueryItemDeptRes
 
-func (p *DeptServiceQueryItemDeptResult) GetSuccess() (v *QueryItemDeptRes) {
+func (p *DeptHandlerQueryItemDeptResult) GetSuccess() (v *QueryItemDeptRes) {
 	if !p.IsSetSuccess() {
-		return DeptServiceQueryItemDeptResult_Success_DEFAULT
+		return DeptHandlerQueryItemDeptResult_Success_DEFAULT
 	}
 	return p.Success
 }
 
-var fieldIDToName_DeptServiceQueryItemDeptResult = map[int16]string{
+var fieldIDToName_DeptHandlerQueryItemDeptResult = map[int16]string{
 	0: "success",
 }
 
-func (p *DeptServiceQueryItemDeptResult) IsSetSuccess() bool {
+func (p *DeptHandlerQueryItemDeptResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *DeptServiceQueryItemDeptResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerQueryItemDeptResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -5075,7 +5075,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptServiceQueryItemDeptResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeptHandlerQueryItemDeptResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -5085,7 +5085,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *DeptServiceQueryItemDeptResult) ReadField0(iprot thrift.TProtocol) error {
+func (p *DeptHandlerQueryItemDeptResult) ReadField0(iprot thrift.TProtocol) error {
 	_field := NewQueryItemDeptRes()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -5094,7 +5094,7 @@ func (p *DeptServiceQueryItemDeptResult) ReadField0(iprot thrift.TProtocol) erro
 	return nil
 }
 
-func (p *DeptServiceQueryItemDeptResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerQueryItemDeptResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("QueryItemDept_result"); err != nil {
 		goto WriteStructBeginError
@@ -5122,7 +5122,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *DeptServiceQueryItemDeptResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *DeptHandlerQueryItemDeptResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -5141,10 +5141,10 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *DeptServiceQueryItemDeptResult) String() string {
+func (p *DeptHandlerQueryItemDeptResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("DeptServiceQueryItemDeptResult(%+v)", *p)
+	return fmt.Sprintf("DeptHandlerQueryItemDeptResult(%+v)", *p)
 
 }
