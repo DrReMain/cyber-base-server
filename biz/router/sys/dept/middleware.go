@@ -4,6 +4,8 @@ package dept
 
 import (
 	"github.com/cloudwego/hertz/pkg/app"
+
+	"github.com/DrReMain/cyber-base-server/biz/middleware"
 )
 
 func rootMw() []app.HandlerFunc {
@@ -18,7 +20,9 @@ func _v1Mw() []app.HandlerFunc {
 
 func _sysMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		middleware.JsonWebToken(),
+	}
 }
 
 func _deptMw() []app.HandlerFunc {

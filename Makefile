@@ -4,6 +4,7 @@ init_api:
 
 update_api:
 	hz update --model_dir biz/hertz_gen -idl idl/template/greet.thrift --unset_omitempty true
+	hz update --model_dir biz/hertz_gen -idl idl/auth/account.thrift --unset_omitempty true
 	hz update --model_dir biz/hertz_gen -idl idl/sys/dept.thrift --unset_omitempty true
 
 gorm_migrate:

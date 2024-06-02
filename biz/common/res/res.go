@@ -34,8 +34,7 @@ func (r *Res) Fail(err error, o any) {
 func (r *Res) Success(o any) {
 	r.c.JSON(consts.StatusOK, o)
 }
-
-func Base(errRest ...error) *base.Base {
+func (r *Res) Base(errRest ...error) *base.Base {
 	var success = true
 	var c = errc.SuccessCode
 	var msg = "ok"
