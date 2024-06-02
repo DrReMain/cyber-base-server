@@ -6,8 +6,8 @@ import (
 	"context"
 
 	"github.com/DrReMain/cyber-base-server/biz/common/res"
-	"github.com/DrReMain/cyber-base-server/biz/dal/sys_model"
 	dept "github.com/DrReMain/cyber-base-server/biz/hertz_gen/sys/dept"
+	sys_dept_service "github.com/DrReMain/cyber-base-server/biz/service/sys/dept"
 	cutils_default "github.com/DrReMain/cyber-base-server/cyber/utils/default"
 
 	"github.com/cloudwego/hertz/pkg/app"
@@ -27,11 +27,7 @@ func CreateDept(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	m := &sys_model.SysDept{
-		DeptName: req.DeptName,
-		Remark:   req.Remark,
-	}
-	err = sys_model.CreateDept(m)
+	m, err := sys_dept_service.NewService(ctx, c).CreateDept(&req)
 	if err != nil {
 		res.InternalFail(c, &dept.CreateDeptRes{
 			Base:   res.BaseInternalFail(),
@@ -60,11 +56,7 @@ func UpdateDept(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	m := &sys_model.SysDept{
-		DeptName: req.DeptName,
-		Remark:   req.Remark,
-	}
-	err = sys_model.UpdateDept(req.ID, m)
+	m, err := sys_dept_service.NewService(ctx, c).UpdateDept(&req)
 	if err != nil {
 		res.InternalFail(c, &dept.UpdateDeptRes{
 			Base:   res.BaseInternalFail(),
@@ -93,7 +85,7 @@ func DeleteDept(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	err = sys_model.DeleteDept(req.ID)
+	err = sys_dept_service.NewService(ctx, c).DeleteDept(&req)
 	if err != nil {
 		res.InternalFail(c, &dept.DeleteDeptRes{
 			Base:   res.BaseInternalFail(),
@@ -122,10 +114,7 @@ func QueryAllDept(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	l, err := sys_model.QueryDeptAll(
-		cutils_default.String(req.DeptName),
-		req.CreatedAt,
-	)
+	l, err := sys_dept_service.NewService(ctx, c).QueryAllDept(&req)
 	if err != nil {
 		res.InternalFail(c, &dept.DeleteDeptRes{
 			Base:   res.BaseInternalFail(),
@@ -163,11 +152,7 @@ func QueryListDept(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	l, t, m, n, s, err := sys_model.QueryDeptList(
-		cutils_default.Int(req.PageNum, 1),
-		cutils_default.Int(req.PageSize, 10),
-		cutils_default.String(req.DeptName),
-	)
+	l, t, m, n, s, err := sys_dept_service.NewService(ctx, c).QueryListDept(&req)
 	if err != nil {
 		res.InternalFail(c, &dept.QueryListDeptRes{
 			Base:   res.BaseInternalFail(),
@@ -208,7 +193,7 @@ func QueryItemDept(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	item, err := sys_model.QueryDeptItem(req.ID)
+	item, err := sys_dept_service.NewService(ctx, c).QueryItemDept(&req)
 	if err != nil {
 		res.InternalFail(c, &dept.QueryItemDeptRes{
 			Base:   res.BaseInternalFail(),
