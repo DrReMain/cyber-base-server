@@ -77,6 +77,7 @@ func (s *Service) QueryListDept(req *dept.QueryListDeptReq) (list *[]sys_model.S
 		cutils_default.Int(req.PageNum, 1),
 		cutils_default.Int(req.PageSize, 10),
 		cutils_default.String(req.DeptName),
+		req.CreatedAt,
 	)
 	p = pagi.NewPagi(total, more, num, size)
 	return

@@ -4,15 +4,14 @@ package base
 
 import (
 	"fmt"
-	"github.com/DrReMain/cyber-base-server/biz/hertz_gen/common/code"
 	"github.com/apache/thrift/lib/go/thrift"
 )
 
 type Base struct {
-	T       int64     `thrift:"t,1,required" form:"t,required" json:"t,required" query:"t,required"`
-	Success bool      `thrift:"success,2,required" form:"success,required" json:"success,required" query:"success,required"`
-	Code    code.Code `thrift:"code,3,required" form:"code,required" json:"code,required" query:"code,required"`
-	Msg     string    `thrift:"msg,4,required" form:"msg,required" json:"msg,required" query:"msg,required"`
+	T       int64  `thrift:"t,1,required" form:"t,required" json:"t,required" query:"t,required"`
+	Success bool   `thrift:"success,2,required" form:"success,required" json:"success,required" query:"success,required"`
+	Code    string `thrift:"code,3,required" form:"code,required" json:"code,required" query:"code,required"`
+	Msg     string `thrift:"msg,4,required" form:"msg,required" json:"msg,required" query:"msg,required"`
 }
 
 func NewBase() *Base {
@@ -27,7 +26,7 @@ func (p *Base) GetSuccess() (v bool) {
 	return p.Success
 }
 
-func (p *Base) GetCode() (v code.Code) {
+func (p *Base) GetCode() (v string) {
 	return p.Code
 }
 
@@ -84,7 +83,7 @@ func (p *Base) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 3:
-			if fieldTypeId == thrift.I32 {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -175,11 +174,11 @@ func (p *Base) ReadField2(iprot thrift.TProtocol) error {
 }
 func (p *Base) ReadField3(iprot thrift.TProtocol) error {
 
-	var _field code.Code
-	if v, err := iprot.ReadI32(); err != nil {
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		_field = code.Code(v)
+		_field = v
 	}
 	p.Code = _field
 	return nil
@@ -271,10 +270,10 @@ WriteFieldEndError:
 }
 
 func (p *Base) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("code", thrift.I32, 3); err != nil {
+	if err = oprot.WriteFieldBegin("code", thrift.STRING, 3); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(int32(p.Code)); err != nil {
+	if err := oprot.WriteString(p.Code); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {

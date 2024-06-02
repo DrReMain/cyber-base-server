@@ -55,6 +55,7 @@ func UpdateDept(ctx context.Context, c *app.RequestContext) {
 
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		err = errc.ParamsInvalidErr.WithMsg(err.Error())
 		r.Fail(err, &dept.UpdateDeptRes{
 			Base:   res.Base(err),
 			Result: nil,
@@ -86,6 +87,7 @@ func DeleteDept(ctx context.Context, c *app.RequestContext) {
 
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		err = errc.ParamsInvalidErr.WithMsg(err.Error())
 		r.Fail(err, &dept.DeleteDeptRes{
 			Base:   res.Base(err),
 			Result: nil,
@@ -96,7 +98,7 @@ func DeleteDept(ctx context.Context, c *app.RequestContext) {
 	err = sys_dept_service.NewService(ctx, c).DeleteDept(&req)
 	if err != nil {
 		r.Fail(err, &dept.DeleteDeptRes{
-			Base:   res.Base(),
+			Base:   res.Base(err),
 			Result: nil,
 		})
 		return
@@ -117,6 +119,7 @@ func QueryAllDept(ctx context.Context, c *app.RequestContext) {
 
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		err = errc.ParamsInvalidErr.WithMsg(err.Error())
 		r.Fail(err, &dept.QueryAllDeptRes{
 			Base:   res.Base(err),
 			Result: nil,
@@ -157,6 +160,7 @@ func QueryListDept(ctx context.Context, c *app.RequestContext) {
 
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		err = errc.ParamsInvalidErr.WithMsg(err.Error())
 		r.Fail(err, &dept.QueryListDeptRes{
 			Base:   res.Base(err),
 			Result: nil,
@@ -200,6 +204,7 @@ func QueryItemDept(ctx context.Context, c *app.RequestContext) {
 
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		err = errc.ParamsInvalidErr.WithMsg(err.Error())
 		r.Fail(err, &dept.QueryItemDeptRes{
 			Base:   res.Base(err),
 			Result: nil,

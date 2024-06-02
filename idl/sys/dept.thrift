@@ -42,7 +42,7 @@ struct DeleteDeptRes {
 
 struct QueryAllDeptReq {
     1: optional string      dept_name  (api.query="dept_name")
-    2: optional list<i64>   created_at (api.query="created_at[]")
+    2: optional list<i64>   created_at (api.query="created_at[]", api.vd="len($)==0 || len($)==2;msg:'时间范围错误'")
 }
 struct QueryAllDeptRes {
     1: required base.Base   base
@@ -50,9 +50,10 @@ struct QueryAllDeptRes {
 }
 
 struct QueryListDeptReq {
-    1: optional i32     page_size   (api.query="page_size")
-    2: optional i32     page_num    (api.query="page_num")
-    3: optional string  dept_name   (api.query="dept_name")
+    1: optional i32         page_size   (api.query="page_size")
+    2: optional i32         page_num    (api.query="page_num")
+    3: optional string      dept_name   (api.query="dept_name")
+    4: optional list<i64>   created_at  (api.query="created_at[]", api.vd="len($)==0 || len($)==2;msg:'时间范围错误'")
 }
 struct QueryListDeptRes {
     1: required base.Base   base

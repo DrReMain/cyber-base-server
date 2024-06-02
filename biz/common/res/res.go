@@ -11,7 +11,6 @@ import (
 
 	"github.com/DrReMain/cyber-base-server/biz/common/errc"
 	"github.com/DrReMain/cyber-base-server/biz/hertz_gen/common/base"
-	"github.com/DrReMain/cyber-base-server/biz/hertz_gen/common/code"
 )
 
 type Res struct {
@@ -29,7 +28,7 @@ func (r *Res) Fail(err error, o any) {
 		return
 	}
 	e := errc.ConvertInternal(err)
-	hlog.Infof("[%s]: %s\r\n%s", e.ErrCode.String(), e.Error(), Json(r.req))
+	hlog.Infof("[%s]: %s\r\n%s", e.Code(), e.Error(), Json(r.req))
 	r.c.JSON(consts.StatusOK, o)
 }
 func (r *Res) Success(o any) {
@@ -38,14 +37,14 @@ func (r *Res) Success(o any) {
 
 func Base(errRest ...error) *base.Base {
 	var success = true
-	var c = code.Code_Success
+	var c = errc.SuccessCode
 	var msg = "ok"
 
 	if len(errRest) > 0 {
 		if err, ok := errRest[0].(error); ok {
 			e := errc.Convert(err)
 			success = false
-			c = e.ErrCode
+			c = e.Code()
 			msg = e.Error()
 		}
 	}
