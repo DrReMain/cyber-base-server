@@ -1,4 +1,4 @@
-namespace go sys
+namespace go sys.dept
 
 include "../base.thrift"
 include "../pagination.thrift"
