@@ -41,7 +41,8 @@ struct DeleteDeptRes {
 }
 
 struct QueryAllDeptReq {
-    1: optional string dept_name    (api.query="dept_name")
+    1: optional string      dept_name  (api.query="dept_name")
+    2: optional list<i64>   created_at (api.query="created_at[]")
 }
 struct QueryAllDeptRes {
     1: required base.Base   base

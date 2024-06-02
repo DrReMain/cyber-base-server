@@ -30,8 +30,12 @@ func DeleteDept(id string) (err error) {
 	return
 }
 
-func QueryDeptAll(DeptName string) (list []SysDept, err error) {
-	err = cyber.DB.Model(&SysDept{}).Where("dept_name LIKE ?", "%"+DeptName+"%").Find(&list).Error
+func QueryDeptAll(DeptName string, CreatedAt []int64) (list []SysDept, err error) {
+	query := cyber.DB.Model(&SysDept{}).Where("dept_name LIKE ?", "%"+DeptName+"%")
+	if len(CreatedAt) == 2 {
+		query = query.Where("created_at BETWEEN ? AND ?", CreatedAt[0], CreatedAt[1])
+	}
+	err = query.Find(&list).Error
 	return
 }
 

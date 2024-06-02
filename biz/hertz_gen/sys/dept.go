@@ -1718,7 +1718,8 @@ func (p *DeleteDeptRes) String() string {
 }
 
 type QueryAllDeptReq struct {
-	DeptName *string `thrift:"dept_name,1,optional" json:"dept_name" query:"dept_name"`
+	DeptName  *string `thrift:"dept_name,1,optional" json:"dept_name" query:"dept_name"`
+	CreatedAt []int64 `thrift:"created_at,2,optional" json:"created_at" query:"created_at[]"`
 }
 
 func NewQueryAllDeptReq() *QueryAllDeptReq {
@@ -1734,12 +1735,26 @@ func (p *QueryAllDeptReq) GetDeptName() (v string) {
 	return *p.DeptName
 }
 
+var QueryAllDeptReq_CreatedAt_DEFAULT []int64
+
+func (p *QueryAllDeptReq) GetCreatedAt() (v []int64) {
+	if !p.IsSetCreatedAt() {
+		return QueryAllDeptReq_CreatedAt_DEFAULT
+	}
+	return p.CreatedAt
+}
+
 var fieldIDToName_QueryAllDeptReq = map[int16]string{
 	1: "dept_name",
+	2: "created_at",
 }
 
 func (p *QueryAllDeptReq) IsSetDeptName() bool {
 	return p.DeptName != nil
+}
+
+func (p *QueryAllDeptReq) IsSetCreatedAt() bool {
+	return p.CreatedAt != nil
 }
 
 func (p *QueryAllDeptReq) Read(iprot thrift.TProtocol) (err error) {
@@ -1764,6 +1779,14 @@ func (p *QueryAllDeptReq) Read(iprot thrift.TProtocol) (err error) {
 		case 1:
 			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.LIST {
+				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -1809,6 +1832,29 @@ func (p *QueryAllDeptReq) ReadField1(iprot thrift.TProtocol) error {
 	p.DeptName = _field
 	return nil
 }
+func (p *QueryAllDeptReq) ReadField2(iprot thrift.TProtocol) error {
+	_, size, err := iprot.ReadListBegin()
+	if err != nil {
+		return err
+	}
+	_field := make([]int64, 0, size)
+	for i := 0; i < size; i++ {
+
+		var _elem int64
+		if v, err := iprot.ReadI64(); err != nil {
+			return err
+		} else {
+			_elem = v
+		}
+
+		_field = append(_field, _elem)
+	}
+	if err := iprot.ReadListEnd(); err != nil {
+		return err
+	}
+	p.CreatedAt = _field
+	return nil
+}
 
 func (p *QueryAllDeptReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -1818,6 +1864,10 @@ func (p *QueryAllDeptReq) Write(oprot thrift.TProtocol) (err error) {
 	if p != nil {
 		if err = p.writeField1(oprot); err != nil {
 			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
 			goto WriteFieldError
 		}
 	}
@@ -1855,6 +1905,33 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *QueryAllDeptReq) writeField2(oprot thrift.TProtocol) (err error) {
+	if p.IsSetCreatedAt() {
+		if err = oprot.WriteFieldBegin("created_at", thrift.LIST, 2); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteListBegin(thrift.I64, len(p.CreatedAt)); err != nil {
+			return err
+		}
+		for _, v := range p.CreatedAt {
+			if err := oprot.WriteI64(v); err != nil {
+				return err
+			}
+		}
+		if err := oprot.WriteListEnd(); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
 func (p *QueryAllDeptReq) String() string {

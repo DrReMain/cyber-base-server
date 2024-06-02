@@ -122,7 +122,10 @@ func QueryAllDept(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	l, err := sys_model.QueryDeptAll(cutils_default.String(req.DeptName))
+	l, err := sys_model.QueryDeptAll(
+		cutils_default.String(req.DeptName),
+		req.CreatedAt,
+	)
 	if err != nil {
 		res.InternalFail(c, &sys.DeleteDeptRes{
 			Base:   res.BaseInternalFail(),
