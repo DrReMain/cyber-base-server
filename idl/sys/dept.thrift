@@ -3,15 +3,14 @@ namespace go sys
 include "../base.thrift"
 include "../pagination.thrift"
 
-struct Null {}
 struct Dept {
-    1: string   id
-    2: string   dept_name
-    3: string   remark
+    1: required string   id
+    2: required string   dept_name
+    3: required string   remark
 }
 struct PResult {
-    1: pagination.P    p
-    2: list<Dept>      list
+    1: required pagination.P    p
+    2: required list<Dept>      list
 }
 
 struct CreateDeptReq {
@@ -19,8 +18,8 @@ struct CreateDeptReq {
     2: optional string remark       (api.body="remark", api.vd="len($)<=500")
 }
 struct CreateDeptRes {
-    1: base.Base   base
-    2: Null        result
+    1: required base.Base   base
+    2: optional bool        result
 }
 
 struct UpdateDeptReq {
@@ -29,24 +28,24 @@ struct UpdateDeptReq {
     3: optional string remark       (api.body="remark", api.vd="len($)<=500")
 }
 struct UpdateDeptRes {
-    1: base.Base   base
-    2: Null        result
+    1: required base.Base   base
+    2: optional bool        result
 }
 
 struct DeleteDeptReq {
     1: required string id           (api.path="id")
 }
 struct DeleteDeptRes {
-    1: base.Base   base
-    2: Null        result
+    1: required base.Base   base
+    2: optional bool        result
 }
 
 struct QueryAllDeptReq {
     1: optional string dept_name    (api.query="dept_name")
 }
 struct QueryAllDeptRes {
-    1: base.Base   base
-    2: list<Dept>  result
+    1: required base.Base   base
+    2: required list<Dept>  result
 }
 
 struct QueryListDeptReq {
@@ -55,16 +54,16 @@ struct QueryListDeptReq {
     3: optional string  dept_name   (api.query="dept_name")
 }
 struct QueryListDeptRes {
-    1: base.Base   base
-    2: PResult     result
+    1: required base.Base   base
+    2: required PResult     result
 }
 
 struct QueryItemDeptReq {
     1: required string id           (api.path="id")
 }
 struct QueryItemDeptRes {
-    1: base.Base   base
-    2: Dept        result
+    1: required base.Base   base
+    2: required Dept        result
 }
 
 service DeptService {

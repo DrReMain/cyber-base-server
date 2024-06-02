@@ -10,25 +10,26 @@ import (
 )
 
 type GreetReq struct {
-	NameContent string `thrift:"name_content,1" json:"name_content" path:"name_content" vd:"($ == 'you' || $ == 'me'); msg: '参数只能是you或者me'"`
+	Name string `thrift:"name,1,required" json:"name,required" path:"name,required" vd:"($ == 'you' || $ == 'me'); msg: '参数只能是you或者me'"`
 }
 
 func NewGreetReq() *GreetReq {
 	return &GreetReq{}
 }
 
-func (p *GreetReq) GetNameContent() (v string) {
-	return p.NameContent
+func (p *GreetReq) GetName() (v string) {
+	return p.Name
 }
 
 var fieldIDToName_GreetReq = map[int16]string{
-	1: "name_content",
+	1: "name",
 }
 
 func (p *GreetReq) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
+	var issetName bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -49,6 +50,7 @@ func (p *GreetReq) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
+				issetName = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -65,6 +67,10 @@ func (p *GreetReq) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
+	if !issetName {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
 	return nil
 ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
@@ -79,6 +85,8 @@ ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_GreetReq[fieldId]))
 }
 
 func (p *GreetReq) ReadField1(iprot thrift.TProtocol) error {
@@ -89,7 +97,7 @@ func (p *GreetReq) ReadField1(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.NameContent = _field
+	p.Name = _field
 	return nil
 }
 
@@ -122,10 +130,10 @@ WriteStructEndError:
 }
 
 func (p *GreetReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("name_content", thrift.STRING, 1); err != nil {
+	if err = oprot.WriteFieldBegin("name", thrift.STRING, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.NameContent); err != nil {
+	if err := oprot.WriteString(p.Name); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -147,25 +155,26 @@ func (p *GreetReq) String() string {
 }
 
 type Result struct {
-	TextContent string `thrift:"text_content,1" form:"text_content" json:"text_content" query:"text_content"`
+	Text string `thrift:"text,1,required" form:"text,required" json:"text,required" query:"text,required"`
 }
 
 func NewResult() *Result {
 	return &Result{}
 }
 
-func (p *Result) GetTextContent() (v string) {
-	return p.TextContent
+func (p *Result) GetText() (v string) {
+	return p.Text
 }
 
 var fieldIDToName_Result = map[int16]string{
-	1: "text_content",
+	1: "text",
 }
 
 func (p *Result) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
+	var issetText bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -186,6 +195,7 @@ func (p *Result) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
+				issetText = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -202,6 +212,10 @@ func (p *Result) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
+	if !issetText {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
 	return nil
 ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
@@ -216,6 +230,8 @@ ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_Result[fieldId]))
 }
 
 func (p *Result) ReadField1(iprot thrift.TProtocol) error {
@@ -226,7 +242,7 @@ func (p *Result) ReadField1(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.TextContent = _field
+	p.Text = _field
 	return nil
 }
 
@@ -259,10 +275,10 @@ WriteStructEndError:
 }
 
 func (p *Result) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("text_content", thrift.STRING, 1); err != nil {
+	if err = oprot.WriteFieldBegin("text", thrift.STRING, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.TextContent); err != nil {
+	if err := oprot.WriteString(p.Text); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {

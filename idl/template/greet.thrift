@@ -3,14 +3,14 @@ namespace go template.greet
 include "../base.thrift"
 
 struct GreetReq {
-    1: string name_content  (
-        api.path="name_content",
+    1: required string name  (
+        api.path="name",
         api.vd="($ == 'you' || $ == 'me'); msg: '参数只能是you或者me'"
     )
 }
 
 struct Result {
-    1: string text_content
+    1: required string text
 }
 struct GreetRes {
     1: required base.Base base

@@ -28,6 +28,6 @@ func Greet(ctx context.Context, c *app.RequestContext) {
 
 	res.Success(c, &greet.GreetRes{
 		Base:   res.BaseSuccess(),
-		Result: &greet.Result{TextContent: "hello " + req.NameContent},
+		Result: &greet.Result{Text: "hello " + req.Name},
 	})
 }

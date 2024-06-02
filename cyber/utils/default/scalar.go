@@ -45,6 +45,12 @@ func defaultInt(rest ...any) int {
 		} else {
 			isNil = true
 		}
+	case *int64:
+		if v != nil {
+			value = int(*v)
+		} else {
+			isNil = true
+		}
 	default:
 		isNil = true
 	}
