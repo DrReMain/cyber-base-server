@@ -28,9 +28,9 @@ func Redis() {
 
 		pong, err := client.Ping(context.Background()).Result()
 		if err != nil {
-			log.Fatalf("[Redis]: 连接Redis失败 '%s'\n", err)
+			log.Fatalf("[Redis]: 连接Redis失败 -> '%s'\n", err)
 		} else {
-			log.Printf("[Redis]: ping response: %s\n", pong)
+			log.Printf("[Redis]: ping response -> %s\n", pong)
 			cyber.Redis = client
 		}
 	}

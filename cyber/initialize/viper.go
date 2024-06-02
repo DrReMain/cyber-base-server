@@ -44,11 +44,11 @@ func Viper() {
 	v.SetConfigType("yaml")
 	err := v.ReadInConfig()
 	if err != nil {
-		log.Fatalf("[Viper]: 读取配置文件失败: %s\n", err)
+		log.Fatalf("[Viper]: 读取配置文件失败 -> '%s'\n", err)
 	}
 	v.WatchConfig()
 	if err = v.Unmarshal(&cyber.Config); err != nil {
-		log.Fatalf("[Viper]: 反序列化配置文件失败: %s\n", err)
+		log.Fatalf("[Viper]: 反序列化配置文件失败 -> '%s'\n", err)
 	}
 
 	cyber.Viper = v

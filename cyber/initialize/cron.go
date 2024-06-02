@@ -20,7 +20,7 @@ func Cron() {
 				hlog.Warnf("每一分钟打印一次日志【%s】\n", time.Now().Format("2006-01-02 15:04:05"))
 			}, "模板定时任务", option...)
 			if err != nil {
-				log.Fatalf("[Cron]: 添加定时任务失败: '%s'\n", err)
+				log.Fatalf("[Cron]: 添加定时任务失败 -> '%s'\n", err)
 			}
 		}
 
@@ -29,7 +29,7 @@ func Cron() {
 		//		具体执行
 		//	}, "任务名称", option...)
 		//	if err != nil {
-		//		log.Fatalf("[Cron]: 添加定时任务失败: '%s'\n", err)
+		//		log.Fatalf("[Cron]: 添加定时任务失败 -> '%s'\n", err)
 		//	}
 		//}
 

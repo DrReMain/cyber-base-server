@@ -12,7 +12,7 @@ import (
 func LocalCache() {
 	du, err := cutils_hd.ParseDuration(cyber.Config.Jwt.ExpiresTime)
 	if err != nil {
-		log.Fatalf("[Utils]: 转换Jwt.ExpiresTime失败 '%s'\n", err)
+		log.Fatalf("[Utils]: 转换Jwt.ExpiresTime失败 -> '%s'\n", err)
 	}
 
 	cyber.LocalCache = local_cache.NewCache(

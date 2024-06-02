@@ -17,7 +17,7 @@ import (
 
 func Zap() {
 	if err := os.MkdirAll(cyber.Config.Zap.Director, os.ModePerm); err != nil {
-		log.Fatalf("[Zap]: 创建日志目录失败 '%s'\n", err)
+		log.Fatalf("[Zap]: 创建日志目录失败 -> '%s'\n", err)
 	}
 
 	var opts []zap.Option
