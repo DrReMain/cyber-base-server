@@ -6,10 +6,11 @@ replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
 require (
 	github.com/apache/thrift v0.0.0-00010101000000-000000000000
+	github.com/bwmarrin/snowflake v0.3.0
+	github.com/bytedance/sonic v1.9.1
 	github.com/cloudwego/hertz v0.9.0
 	github.com/glebarez/sqlite v1.8.0
 	github.com/go-sql-driver/mysql v1.7.1
-	github.com/gofrs/uuid/v5 v5.2.0
 	github.com/hertz-contrib/logger/zap v1.1.0
 	github.com/redis/go-redis/v9 v9.5.1
 	github.com/robfig/cron/v3 v3.0.1
@@ -25,7 +26,6 @@ require (
 require (
 	github.com/bytedance/go-tagexpr/v2 v2.9.2 // indirect
 	github.com/bytedance/gopkg v0.0.0-20220413063733-65bf48ffb3a7 // indirect
-	github.com/bytedance/sonic v1.9.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
 	github.com/cloudwego/netpoll v0.5.0 // indirect

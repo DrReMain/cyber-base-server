@@ -2,15 +2,16 @@ package res
 
 import (
 	"errors"
-	"github.com/bytedance/sonic"
 	"time"
 
+	"github.com/bytedance/sonic"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 
 	"github.com/DrReMain/cyber-base-server/biz/hertz_gen/common/base"
 	"github.com/DrReMain/cyber-base-server/biz/hertz_gen/common/code"
+	"github.com/DrReMain/cyber-base-server/biz/hertz_gen/common/pagination"
 )
 
 func Base(success bool, code code.Code, rest ...any) *base.Base {
@@ -37,6 +38,15 @@ func BaseValidateFail(err error) *base.Base {
 }
 func BaseInternalFail() *base.Base {
 	return Base(false, code.Code_DBError, errors.New("服务器错误"))
+}
+
+func P(total int64, more bool, num, size int) *pagination.P {
+	return &pagination.P{
+		Total:    total,
+		More:     more,
+		PageNum:  int32(num),
+		PageSize: int32(size),
+	}
 }
 
 func Success(c *app.RequestContext, o any) {

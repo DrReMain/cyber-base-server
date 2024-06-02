@@ -10,8 +10,8 @@ import (
 type P struct {
 	Total    int64 `thrift:"total,1" form:"total" json:"total" query:"total"`
 	More     bool  `thrift:"more,2" form:"more" json:"more" query:"more"`
-	PageSize int32 `thrift:"page_size,3" form:"page_size" json:"page_size" query:"page_size"`
-	PageNum  int32 `thrift:"page_num,4" form:"page_num" json:"page_num" query:"page_num"`
+	PageNum  int32 `thrift:"page_num,3" form:"page_num" json:"page_num" query:"page_num"`
+	PageSize int32 `thrift:"page_size,4" form:"page_size" json:"page_size" query:"page_size"`
 }
 
 func NewP() *P {
@@ -26,19 +26,19 @@ func (p *P) GetMore() (v bool) {
 	return p.More
 }
 
-func (p *P) GetPageSize() (v int32) {
-	return p.PageSize
-}
-
 func (p *P) GetPageNum() (v int32) {
 	return p.PageNum
+}
+
+func (p *P) GetPageSize() (v int32) {
+	return p.PageSize
 }
 
 var fieldIDToName_P = map[int16]string{
 	1: "total",
 	2: "more",
-	3: "page_size",
-	4: "page_num",
+	3: "page_num",
+	4: "page_size",
 }
 
 func (p *P) Read(iprot thrift.TProtocol) (err error) {
@@ -151,7 +151,7 @@ func (p *P) ReadField3(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.PageSize = _field
+	p.PageNum = _field
 	return nil
 }
 func (p *P) ReadField4(iprot thrift.TProtocol) error {
@@ -162,7 +162,7 @@ func (p *P) ReadField4(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.PageNum = _field
+	p.PageSize = _field
 	return nil
 }
 
@@ -241,10 +241,10 @@ WriteFieldEndError:
 }
 
 func (p *P) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("page_size", thrift.I32, 3); err != nil {
+	if err = oprot.WriteFieldBegin("page_num", thrift.I32, 3); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(p.PageSize); err != nil {
+	if err := oprot.WriteI32(p.PageNum); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -258,10 +258,10 @@ WriteFieldEndError:
 }
 
 func (p *P) writeField4(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("page_num", thrift.I32, 4); err != nil {
+	if err = oprot.WriteFieldBegin("page_size", thrift.I32, 4); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(p.PageNum); err != nil {
+	if err := oprot.WriteI32(p.PageSize); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {

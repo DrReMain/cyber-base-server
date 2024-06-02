@@ -91,22 +91,17 @@ func (p *Null) String() string {
 }
 
 type Dept struct {
-	ID       int64  `thrift:"id,1" form:"id" json:"id" query:"id"`
-	UUID     string `thrift:"uuid,2" form:"uuid" json:"uuid" query:"uuid"`
-	DeptName string `thrift:"dept_name,3" form:"dept_name" json:"dept_name" query:"dept_name"`
-	Remark   string `thrift:"remark,4" form:"remark" json:"remark" query:"remark"`
+	ID       string `thrift:"id,1" form:"id" json:"id" query:"id"`
+	DeptName string `thrift:"dept_name,2" form:"dept_name" json:"dept_name" query:"dept_name"`
+	Remark   string `thrift:"remark,3" form:"remark" json:"remark" query:"remark"`
 }
 
 func NewDept() *Dept {
 	return &Dept{}
 }
 
-func (p *Dept) GetID() (v int64) {
+func (p *Dept) GetID() (v string) {
 	return p.ID
-}
-
-func (p *Dept) GetUUID() (v string) {
-	return p.UUID
 }
 
 func (p *Dept) GetDeptName() (v string) {
@@ -119,9 +114,8 @@ func (p *Dept) GetRemark() (v string) {
 
 var fieldIDToName_Dept = map[int16]string{
 	1: "id",
-	2: "uuid",
-	3: "dept_name",
-	4: "remark",
+	2: "dept_name",
+	3: "remark",
 }
 
 func (p *Dept) Read(iprot thrift.TProtocol) (err error) {
@@ -144,7 +138,7 @@ func (p *Dept) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -162,14 +156,6 @@ func (p *Dept) Read(iprot thrift.TProtocol) (err error) {
 		case 3:
 			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField3(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 4:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField4(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -206,8 +192,8 @@ ReadStructEndError:
 
 func (p *Dept) ReadField1(iprot thrift.TProtocol) error {
 
-	var _field int64
-	if v, err := iprot.ReadI64(); err != nil {
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
 		_field = v
@@ -223,21 +209,10 @@ func (p *Dept) ReadField2(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.UUID = _field
-	return nil
-}
-func (p *Dept) ReadField3(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
 	p.DeptName = _field
 	return nil
 }
-func (p *Dept) ReadField4(iprot thrift.TProtocol) error {
+func (p *Dept) ReadField3(iprot thrift.TProtocol) error {
 
 	var _field string
 	if v, err := iprot.ReadString(); err != nil {
@@ -267,10 +242,6 @@ func (p *Dept) Write(oprot thrift.TProtocol) (err error) {
 			fieldId = 3
 			goto WriteFieldError
 		}
-		if err = p.writeField4(oprot); err != nil {
-			fieldId = 4
-			goto WriteFieldError
-		}
 	}
 	if err = oprot.WriteFieldStop(); err != nil {
 		goto WriteFieldStopError
@@ -290,10 +261,10 @@ WriteStructEndError:
 }
 
 func (p *Dept) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
+	if err = oprot.WriteFieldBegin("id", thrift.STRING, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.ID); err != nil {
+	if err := oprot.WriteString(p.ID); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -307,10 +278,10 @@ WriteFieldEndError:
 }
 
 func (p *Dept) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("uuid", thrift.STRING, 2); err != nil {
+	if err = oprot.WriteFieldBegin("dept_name", thrift.STRING, 2); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.UUID); err != nil {
+	if err := oprot.WriteString(p.DeptName); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -324,10 +295,10 @@ WriteFieldEndError:
 }
 
 func (p *Dept) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("dept_name", thrift.STRING, 3); err != nil {
+	if err = oprot.WriteFieldBegin("remark", thrift.STRING, 3); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.DeptName); err != nil {
+	if err := oprot.WriteString(p.Remark); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -340,23 +311,6 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
 
-func (p *Dept) writeField4(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("remark", thrift.STRING, 4); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Remark); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
-}
-
 func (p *Dept) String() string {
 	if p == nil {
 		return "<nil>"
@@ -366,8 +320,8 @@ func (p *Dept) String() string {
 }
 
 type PResult struct {
-	P    *pagination.P `thrift:"p,1,required" form:"p,required" json:"p,required" query:"p,required"`
-	List []*Dept       `thrift:"list,2,required" form:"list,required" json:"list,required" query:"list,required"`
+	P    *pagination.P `thrift:"p,1" form:"p" json:"p" query:"p"`
+	List []*Dept       `thrift:"list,2" form:"list" json:"list" query:"list"`
 }
 
 func NewPResult() *PResult {
@@ -400,8 +354,6 @@ func (p *PResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetP bool = false
-	var issetList bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -422,7 +374,6 @@ func (p *PResult) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetP = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -431,7 +382,6 @@ func (p *PResult) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetList = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -448,15 +398,6 @@ func (p *PResult) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetP {
-		fieldId = 1
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetList {
-		fieldId = 2
-		goto RequiredFieldNotSetError
-	}
 	return nil
 ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
@@ -471,8 +412,6 @@ ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-RequiredFieldNotSetError:
-	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_PResult[fieldId]))
 }
 
 func (p *PResult) ReadField1(iprot thrift.TProtocol) error {
@@ -589,8 +528,8 @@ func (p *PResult) String() string {
 }
 
 type CreateDeptReq struct {
-	DeptName *string `thrift:"dept_name,1,optional" form:"dept_name" json:"dept_name" vd:"(len($)>0 && len($)<100);msg:'参数错误'"`
-	Remark   *string `thrift:"remark,2,optional" form:"remark" json:"remark" vd:"len($) < 500;msg:'参数错误'"`
+	DeptName *string `thrift:"dept_name,1,optional" form:"dept_name" json:"dept_name" vd:"(len($)>0 && len($)<=100);msg:'部门名称不能为空也不能多于100个字符'"`
+	Remark   *string `thrift:"remark,2,optional" form:"remark" json:"remark" vd:"len($)<=500"`
 }
 
 func NewCreateDeptReq() *CreateDeptReq {
@@ -794,8 +733,8 @@ func (p *CreateDeptReq) String() string {
 }
 
 type CreateDeptRes struct {
-	Base   *base.Base `thrift:"base,1,required" form:"base,required" json:"base,required" query:"base,required"`
-	Result *Null      `thrift:"result,2,required" form:"result,required" json:"result,required" query:"result,required"`
+	Base   *base.Base `thrift:"base,1" form:"base" json:"base" query:"base"`
+	Result *Null      `thrift:"result,2" form:"result" json:"result" query:"result"`
 }
 
 func NewCreateDeptRes() *CreateDeptRes {
@@ -837,8 +776,6 @@ func (p *CreateDeptRes) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetBase bool = false
-	var issetResult bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -859,7 +796,6 @@ func (p *CreateDeptRes) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetBase = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -868,7 +804,6 @@ func (p *CreateDeptRes) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetResult = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -885,15 +820,6 @@ func (p *CreateDeptRes) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetBase {
-		fieldId = 1
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetResult {
-		fieldId = 2
-		goto RequiredFieldNotSetError
-	}
 	return nil
 ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
@@ -908,8 +834,6 @@ ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-RequiredFieldNotSetError:
-	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_CreateDeptRes[fieldId]))
 }
 
 func (p *CreateDeptRes) ReadField1(iprot thrift.TProtocol) error {
@@ -1004,16 +928,16 @@ func (p *CreateDeptRes) String() string {
 }
 
 type UpdateDeptReq struct {
-	ID       int64   `thrift:"id,1,required" json:"id,required" path:"id,required" vd:"$>0;msg:'参数错误'"`
-	DeptName *string `thrift:"dept_name,2,optional" form:"dept_name" json:"dept_name" vd:"len($) < 100;msg:'参数错误'"`
-	Remark   *string `thrift:"remark,3,optional" form:"remark" json:"remark" vd:"len($) < 500;msg:'参数错误'"`
+	ID       string  `thrift:"id,1,required" json:"id,required" path:"id,required"`
+	DeptName *string `thrift:"dept_name,2,optional" form:"dept_name" json:"dept_name" vd:"len($)<=100"`
+	Remark   *string `thrift:"remark,3,optional" form:"remark" json:"remark" vd:"len($)<=500"`
 }
 
 func NewUpdateDeptReq() *UpdateDeptReq {
 	return &UpdateDeptReq{}
 }
 
-func (p *UpdateDeptReq) GetID() (v int64) {
+func (p *UpdateDeptReq) GetID() (v string) {
 	return p.ID
 }
 
@@ -1070,7 +994,7 @@ func (p *UpdateDeptReq) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -1131,8 +1055,8 @@ RequiredFieldNotSetError:
 
 func (p *UpdateDeptReq) ReadField1(iprot thrift.TProtocol) error {
 
-	var _field int64
-	if v, err := iprot.ReadI64(); err != nil {
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
 		_field = v
@@ -1200,10 +1124,10 @@ WriteStructEndError:
 }
 
 func (p *UpdateDeptReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
+	if err = oprot.WriteFieldBegin("id", thrift.STRING, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.ID); err != nil {
+	if err := oprot.WriteString(p.ID); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1263,8 +1187,8 @@ func (p *UpdateDeptReq) String() string {
 }
 
 type UpdateDeptRes struct {
-	Base   *base.Base `thrift:"base,1,required" form:"base,required" json:"base,required" query:"base,required"`
-	Result *Null      `thrift:"result,2,required" form:"result,required" json:"result,required" query:"result,required"`
+	Base   *base.Base `thrift:"base,1" form:"base" json:"base" query:"base"`
+	Result *Null      `thrift:"result,2" form:"result" json:"result" query:"result"`
 }
 
 func NewUpdateDeptRes() *UpdateDeptRes {
@@ -1306,8 +1230,6 @@ func (p *UpdateDeptRes) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetBase bool = false
-	var issetResult bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -1328,7 +1250,6 @@ func (p *UpdateDeptRes) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetBase = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -1337,7 +1258,6 @@ func (p *UpdateDeptRes) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetResult = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -1354,15 +1274,6 @@ func (p *UpdateDeptRes) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetBase {
-		fieldId = 1
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetResult {
-		fieldId = 2
-		goto RequiredFieldNotSetError
-	}
 	return nil
 ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
@@ -1377,8 +1288,6 @@ ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-RequiredFieldNotSetError:
-	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_UpdateDeptRes[fieldId]))
 }
 
 func (p *UpdateDeptRes) ReadField1(iprot thrift.TProtocol) error {
@@ -1473,14 +1382,14 @@ func (p *UpdateDeptRes) String() string {
 }
 
 type DeleteDeptReq struct {
-	ID int64 `thrift:"id,1,required" json:"id,required" path:"id,required" vd:"$>0;msg:'参数错误'"`
+	ID string `thrift:"id,1,required" json:"id,required" path:"id,required"`
 }
 
 func NewDeleteDeptReq() *DeleteDeptReq {
 	return &DeleteDeptReq{}
 }
 
-func (p *DeleteDeptReq) GetID() (v int64) {
+func (p *DeleteDeptReq) GetID() (v string) {
 	return p.ID
 }
 
@@ -1509,7 +1418,7 @@ func (p *DeleteDeptReq) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -1554,8 +1463,8 @@ RequiredFieldNotSetError:
 
 func (p *DeleteDeptReq) ReadField1(iprot thrift.TProtocol) error {
 
-	var _field int64
-	if v, err := iprot.ReadI64(); err != nil {
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
 		_field = v
@@ -1593,10 +1502,10 @@ WriteStructEndError:
 }
 
 func (p *DeleteDeptReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
+	if err = oprot.WriteFieldBegin("id", thrift.STRING, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.ID); err != nil {
+	if err := oprot.WriteString(p.ID); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1618,8 +1527,8 @@ func (p *DeleteDeptReq) String() string {
 }
 
 type DeleteDeptRes struct {
-	Base   *base.Base `thrift:"base,1,required" form:"base,required" json:"base,required" query:"base,required"`
-	Result *Null      `thrift:"result,2,required" form:"result,required" json:"result,required" query:"result,required"`
+	Base   *base.Base `thrift:"base,1" form:"base" json:"base" query:"base"`
+	Result *Null      `thrift:"result,2" form:"result" json:"result" query:"result"`
 }
 
 func NewDeleteDeptRes() *DeleteDeptRes {
@@ -1661,8 +1570,6 @@ func (p *DeleteDeptRes) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetBase bool = false
-	var issetResult bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -1683,7 +1590,6 @@ func (p *DeleteDeptRes) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetBase = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -1692,7 +1598,6 @@ func (p *DeleteDeptRes) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetResult = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -1709,15 +1614,6 @@ func (p *DeleteDeptRes) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetBase {
-		fieldId = 1
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetResult {
-		fieldId = 2
-		goto RequiredFieldNotSetError
-	}
 	return nil
 ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
@@ -1732,8 +1628,6 @@ ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-RequiredFieldNotSetError:
-	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_DeleteDeptRes[fieldId]))
 }
 
 func (p *DeleteDeptRes) ReadField1(iprot thrift.TProtocol) error {
@@ -1976,8 +1870,8 @@ func (p *QueryAllDeptReq) String() string {
 }
 
 type QueryAllDeptRes struct {
-	Base   *base.Base `thrift:"base,1,required" form:"base,required" json:"base,required" query:"base,required"`
-	Result []*Dept    `thrift:"result,2,required" form:"result,required" json:"result,required" query:"result,required"`
+	Base   *base.Base `thrift:"base,1" form:"base" json:"base" query:"base"`
+	Result []*Dept    `thrift:"result,2" form:"result" json:"result" query:"result"`
 }
 
 func NewQueryAllDeptRes() *QueryAllDeptRes {
@@ -2010,8 +1904,6 @@ func (p *QueryAllDeptRes) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetBase bool = false
-	var issetResult bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -2032,7 +1924,6 @@ func (p *QueryAllDeptRes) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetBase = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -2041,7 +1932,6 @@ func (p *QueryAllDeptRes) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetResult = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -2058,15 +1948,6 @@ func (p *QueryAllDeptRes) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetBase {
-		fieldId = 1
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetResult {
-		fieldId = 2
-		goto RequiredFieldNotSetError
-	}
 	return nil
 ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
@@ -2081,8 +1962,6 @@ ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-RequiredFieldNotSetError:
-	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_QueryAllDeptRes[fieldId]))
 }
 
 func (p *QueryAllDeptRes) ReadField1(iprot thrift.TProtocol) error {
@@ -2461,8 +2340,8 @@ func (p *QueryListDeptReq) String() string {
 }
 
 type QueryListDeptRes struct {
-	Base   *base.Base `thrift:"base,1,required" form:"base,required" json:"base,required" query:"base,required"`
-	Result *PResult   `thrift:"result,2,required" form:"result,required" json:"result,required" query:"result,required"`
+	Base   *base.Base `thrift:"base,1" form:"base" json:"base" query:"base"`
+	Result *PResult   `thrift:"result,2" form:"result" json:"result" query:"result"`
 }
 
 func NewQueryListDeptRes() *QueryListDeptRes {
@@ -2504,8 +2383,6 @@ func (p *QueryListDeptRes) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetBase bool = false
-	var issetResult bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -2526,7 +2403,6 @@ func (p *QueryListDeptRes) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetBase = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -2535,7 +2411,6 @@ func (p *QueryListDeptRes) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetResult = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -2552,15 +2427,6 @@ func (p *QueryListDeptRes) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetBase {
-		fieldId = 1
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetResult {
-		fieldId = 2
-		goto RequiredFieldNotSetError
-	}
 	return nil
 ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
@@ -2575,8 +2441,6 @@ ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-RequiredFieldNotSetError:
-	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_QueryListDeptRes[fieldId]))
 }
 
 func (p *QueryListDeptRes) ReadField1(iprot thrift.TProtocol) error {
@@ -2671,14 +2535,14 @@ func (p *QueryListDeptRes) String() string {
 }
 
 type QueryItemDeptReq struct {
-	ID int64 `thrift:"id,1,required" json:"id,required" path:"id,required" vd:"$>0;msg:'参数错误'"`
+	ID string `thrift:"id,1,required" json:"id,required" path:"id,required"`
 }
 
 func NewQueryItemDeptReq() *QueryItemDeptReq {
 	return &QueryItemDeptReq{}
 }
 
-func (p *QueryItemDeptReq) GetID() (v int64) {
+func (p *QueryItemDeptReq) GetID() (v string) {
 	return p.ID
 }
 
@@ -2707,7 +2571,7 @@ func (p *QueryItemDeptReq) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -2752,8 +2616,8 @@ RequiredFieldNotSetError:
 
 func (p *QueryItemDeptReq) ReadField1(iprot thrift.TProtocol) error {
 
-	var _field int64
-	if v, err := iprot.ReadI64(); err != nil {
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
 		_field = v
@@ -2791,10 +2655,10 @@ WriteStructEndError:
 }
 
 func (p *QueryItemDeptReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
+	if err = oprot.WriteFieldBegin("id", thrift.STRING, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.ID); err != nil {
+	if err := oprot.WriteString(p.ID); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -2816,8 +2680,8 @@ func (p *QueryItemDeptReq) String() string {
 }
 
 type QueryItemDeptRes struct {
-	Base   *base.Base `thrift:"base,1,required" form:"base,required" json:"base,required" query:"base,required"`
-	Result *Dept      `thrift:"result,2,required" form:"result,required" json:"result,required" query:"result,required"`
+	Base   *base.Base `thrift:"base,1" form:"base" json:"base" query:"base"`
+	Result *Dept      `thrift:"result,2" form:"result" json:"result" query:"result"`
 }
 
 func NewQueryItemDeptRes() *QueryItemDeptRes {
@@ -2859,8 +2723,6 @@ func (p *QueryItemDeptRes) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetBase bool = false
-	var issetResult bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -2881,7 +2743,6 @@ func (p *QueryItemDeptRes) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetBase = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -2890,7 +2751,6 @@ func (p *QueryItemDeptRes) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetResult = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -2907,15 +2767,6 @@ func (p *QueryItemDeptRes) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetBase {
-		fieldId = 1
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetResult {
-		fieldId = 2
-		goto RequiredFieldNotSetError
-	}
 	return nil
 ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
@@ -2930,8 +2781,6 @@ ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-RequiredFieldNotSetError:
-	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_QueryItemDeptRes[fieldId]))
 }
 
 func (p *QueryItemDeptRes) ReadField1(iprot thrift.TProtocol) error {

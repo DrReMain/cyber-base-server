@@ -5,49 +5,48 @@ include "../pagination.thrift"
 
 struct Null {}
 struct Dept {
-    1: i64      id
-    2: string   uuid
-    3: string   dept_name
-    4: string   remark
+    1: string   id
+    2: string   dept_name
+    3: string   remark
 }
 struct PResult {
-    1: required pagination.P    p
-    2: required list<Dept>      list
+    1: pagination.P    p
+    2: list<Dept>      list
 }
 
 struct CreateDeptReq {
-    1: optional string dept_name    (api.body="dept_name", api.vd="(len($)>0 && len($)<100);msg:'参数错误'")
-    2: optional string remark       (api.body="remark", api.vd="len($) < 500;msg:'参数错误'")
+    1: optional string dept_name    (api.body="dept_name", api.vd="(len($)>0 && len($)<=100);msg:'部门名称不能为空也不能多于100个字符'")
+    2: optional string remark       (api.body="remark", api.vd="len($)<=500")
 }
 struct CreateDeptRes {
-    1: required base.Base   base
-    2: required Null        result
+    1: base.Base   base
+    2: Null        result
 }
 
 struct UpdateDeptReq {
-    1: required i64 id              (api.path="id", api.vd="$>0;msg:'参数错误'")
-    2: optional string dept_name    (api.body="dept_name", api.vd="len($) < 100;msg:'参数错误'")
-    3: optional string remark       (api.body="remark", api.vd="len($) < 500;msg:'参数错误'")
+    1: required string id           (api.path="id")
+    2: optional string dept_name    (api.body="dept_name", api.vd="len($)<=100")
+    3: optional string remark       (api.body="remark", api.vd="len($)<=500")
 }
 struct UpdateDeptRes {
-    1: required base.Base   base
-    2: required Null        result
+    1: base.Base   base
+    2: Null        result
 }
 
 struct DeleteDeptReq {
-    1: required i64 id              (api.path="id", api.vd="$>0;msg:'参数错误'")
+    1: required string id           (api.path="id")
 }
 struct DeleteDeptRes {
-    1: required base.Base   base
-    2: required Null        result
+    1: base.Base   base
+    2: Null        result
 }
 
 struct QueryAllDeptReq {
     1: optional string dept_name    (api.query="dept_name")
 }
 struct QueryAllDeptRes {
-    1: required base.Base   base
-    2: required list<Dept>  result
+    1: base.Base   base
+    2: list<Dept>  result
 }
 
 struct QueryListDeptReq {
@@ -56,16 +55,16 @@ struct QueryListDeptReq {
     3: optional string  dept_name   (api.query="dept_name")
 }
 struct QueryListDeptRes {
-    1: required base.Base   base
-    2: required PResult     result
+    1: base.Base   base
+    2: PResult     result
 }
 
 struct QueryItemDeptReq {
-    1: required i64 id              (api.path="id", api.vd="$>0;msg:'参数错误'")
+    1: required string id           (api.path="id")
 }
 struct QueryItemDeptRes {
-    1: required base.Base   base
-    2: required Dept        result
+    1: base.Base   base
+    2: Dept        result
 }
 
 service DeptService {

@@ -19,6 +19,7 @@ func defaultInt(rest ...any) int {
 
 	var value int
 	isNil := false
+
 	switch v := rest[0].(type) {
 	case *int:
 		if v != nil {
