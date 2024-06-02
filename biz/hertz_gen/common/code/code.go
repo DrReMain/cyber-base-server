@@ -11,19 +11,28 @@ import (
 type Code int64
 
 const (
-	Code_Success       Code = 0
-	Code_DBError       Code = 100000
-	Code_ParamsInvalid Code = 100001
+	Code_Success                Code = 0
+	Code_InternalErr            Code = 100000
+	Code_ParamsInvalidErr       Code = 100001
+	Code_AuthorizationFailedErr Code = 100002
+	Code_AlreadyExistErr        Code = 100003
+	Code_NotExistErr            Code = 100004
 )
 
 func (p Code) String() string {
 	switch p {
 	case Code_Success:
 		return "Success"
-	case Code_DBError:
-		return "DBError"
-	case Code_ParamsInvalid:
-		return "ParamsInvalid"
+	case Code_InternalErr:
+		return "InternalErr"
+	case Code_ParamsInvalidErr:
+		return "ParamsInvalidErr"
+	case Code_AuthorizationFailedErr:
+		return "AuthorizationFailedErr"
+	case Code_AlreadyExistErr:
+		return "AlreadyExistErr"
+	case Code_NotExistErr:
+		return "NotExistErr"
 	}
 	return "<UNSET>"
 }
@@ -32,10 +41,16 @@ func CodeFromString(s string) (Code, error) {
 	switch s {
 	case "Success":
 		return Code_Success, nil
-	case "DBError":
-		return Code_DBError, nil
-	case "ParamsInvalid":
-		return Code_ParamsInvalid, nil
+	case "InternalErr":
+		return Code_InternalErr, nil
+	case "ParamsInvalidErr":
+		return Code_ParamsInvalidErr, nil
+	case "AuthorizationFailedErr":
+		return Code_AuthorizationFailedErr, nil
+	case "AlreadyExistErr":
+		return Code_AlreadyExistErr, nil
+	case "NotExistErr":
+		return Code_NotExistErr, nil
 	}
 	return Code(0), fmt.Errorf("not a valid Code string")
 }

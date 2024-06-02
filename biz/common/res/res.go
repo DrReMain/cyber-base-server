@@ -2,7 +2,6 @@ package res
 
 import (
 	"context"
-	"errors"
 	"time"
 
 	"github.com/bytedance/sonic"
@@ -10,6 +9,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 
+	"github.com/DrReMain/cyber-base-server/biz/common/errc"
 	"github.com/DrReMain/cyber-base-server/biz/hertz_gen/common/base"
 	"github.com/DrReMain/cyber-base-server/biz/hertz_gen/common/code"
 )
@@ -24,44 +24,38 @@ func NewRes(ctx context.Context, c *app.RequestContext, req any) *Res {
 	return &Res{ctx, c, req}
 }
 
-func (r *Res) ValidateFail(err error, o any) {
-	hlog.Infof("[%s]: %s \r\n%s", code.Code_ParamsInvalid.String(), err, Json(r.req))
+func (r *Res) Fail(err error, o any) {
+	if err == nil {
+		return
+	}
+	e := errc.ConvertInternal(err)
+	hlog.Infof("[%s]: %s\r\n%s", e.ErrCode.String(), e.Error(), Json(r.req))
 	r.c.JSON(consts.StatusOK, o)
 }
-
-func (r *Res) InternalFail(err error, o any, a ...any) {
-	hlog.Infof("[%s]: %s \r\n%s", code.Code_DBError.String(), err, Json(a))
-	r.c.JSON(consts.StatusInternalServerError, o)
-}
-
 func (r *Res) Success(o any) {
 	r.c.JSON(consts.StatusOK, o)
 }
 
-func Base(success bool, code code.Code, rest ...any) *base.Base {
-	var msg string
-	if len(rest) > 0 {
-		if err, ok := rest[0].(error); ok {
-			msg = err.Error()
+func Base(errRest ...error) *base.Base {
+	var success = true
+	var c = code.Code_Success
+	var msg = "ok"
+
+	if len(errRest) > 0 {
+		if err, ok := errRest[0].(error); ok {
+			e := errc.Convert(err)
+			success = false
+			c = e.ErrCode
+			msg = e.Error()
 		}
-	} else {
-		msg = "OK"
 	}
+
 	return &base.Base{
 		T:       time.Now().UnixMilli(),
 		Success: success,
-		Code:    code,
+		Code:    c,
 		Msg:     msg,
 	}
-}
-func BaseSuccess() *base.Base {
-	return Base(true, code.Code_Success)
-}
-func BaseValidateFail(err error) *base.Base {
-	return Base(false, code.Code_ParamsInvalid, err)
-}
-func BaseInternalFail() *base.Base {
-	return Base(false, code.Code_DBError, errors.New("服务器异常"))
 }
 
 func Json(o any) string {

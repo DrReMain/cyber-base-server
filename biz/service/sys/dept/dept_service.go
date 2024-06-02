@@ -2,9 +2,12 @@ package sys_dept_service
 
 import (
 	"context"
+	"errors"
 
 	"github.com/cloudwego/hertz/pkg/app"
+	"gorm.io/gorm"
 
+	"github.com/DrReMain/cyber-base-server/biz/common/errc"
 	"github.com/DrReMain/cyber-base-server/biz/common/pagi"
 	"github.com/DrReMain/cyber-base-server/biz/dal/sys_model"
 	"github.com/DrReMain/cyber-base-server/biz/hertz_gen/sys/dept"
@@ -21,6 +24,12 @@ func NewService(ctx context.Context, c *app.RequestContext) *Service {
 }
 
 func (s *Service) CreateDept(req *dept.CreateDeptReq) (err error) {
+	_, err = sys_model.QueryByDeptName(*req.DeptName)
+	if err == nil {
+		err = errc.AlreadyExistErr
+		return
+	}
+
 	m := &sys_model.SysDept{
 		DeptName: req.DeptName,
 		Remark:   req.Remark,
@@ -30,6 +39,12 @@ func (s *Service) CreateDept(req *dept.CreateDeptReq) (err error) {
 }
 
 func (s *Service) UpdateDept(req *dept.UpdateDeptReq) (err error) {
+	_, err = sys_model.QueryDeptItem(req.ID)
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		err = errc.NotExistErr
+		return
+	}
+
 	m := &sys_model.SysDept{
 		DeptName: req.DeptName,
 		Remark:   req.Remark,
@@ -39,6 +54,12 @@ func (s *Service) UpdateDept(req *dept.UpdateDeptReq) (err error) {
 }
 
 func (s *Service) DeleteDept(req *dept.DeleteDeptReq) (err error) {
+	_, err = sys_model.QueryDeptItem(req.ID)
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		err = errc.NotExistErr
+		return
+	}
+
 	err = sys_model.DeleteDept(req.ID)
 	return
 }
@@ -63,5 +84,9 @@ func (s *Service) QueryListDept(req *dept.QueryListDeptReq) (list *[]sys_model.S
 
 func (s *Service) QueryItemDept(req *dept.QueryItemDeptReq) (item *sys_model.SysDept, err error) {
 	item, err = sys_model.QueryDeptItem(req.ID)
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		err = errc.NotExistErr
+		return
+	}
 	return
 }
