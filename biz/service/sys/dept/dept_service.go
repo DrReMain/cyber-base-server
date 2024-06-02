@@ -51,11 +51,7 @@ func (s *Service) QueryAllDept(req *dept.QueryAllDeptReq) (list *[]sys_model.Sys
 	return
 }
 
-func (s *Service) QueryListDept(req *dept.QueryListDeptReq) (
-	list *[]sys_model.SysDept,
-	p *pagi.Pagi,
-	err error,
-) {
+func (s *Service) QueryListDept(req *dept.QueryListDeptReq) (list *[]sys_model.SysDept, p *pagi.Pagi, err error) {
 	list, total, more, num, size, err := sys_model.QueryDeptList(
 		cutils_default.Int(req.PageNum, 1),
 		cutils_default.Int(req.PageSize, 10),
