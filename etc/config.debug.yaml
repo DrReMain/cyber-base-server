@@ -2,20 +2,20 @@ system:
   port: 8000
   ip-limit-count: 15000
   ip-limit-time: 3600
-  db: mysql # mysql pgsql sqlite
+  db: mysql           # mysql pgsql sqlite
   redis: true
 
 jwt:
   signing-key: secret
-  expires-time: 7d
-  buffer-time: 1d
+  expires-time: 1d    # token有效时间
+  buffer-time: 2d     # token生成后，在此时间内都可以根据旧token刷新
   issuer: issuer
 
 zap:
   director: logs
-  level: debug # debug/info/warn/error/fatal
+  level: debug        # debug/info/warn/error/fatal
   prefix: ""
-  format: console # json/console
+  format: console     # json/console
   encode-level: CapitalColorLevelEncoder
   stacktrace-key: stacktrace
   stdout: true
@@ -41,7 +41,7 @@ mysql:
   password: "root"
   max-idle-conns: 10
   max-open-conns: 100
-  log-level: "info"   # silent / error / warn / info
+  log-level: "info"     # silent / error / warn / info
   log-zap: true
 
 pgsql:
