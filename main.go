@@ -8,6 +8,7 @@ import (
 
 	"github.com/cloudwego/hertz/pkg/app/server"
 
+	"github.com/DrReMain/cyber-base-server/biz/middleware"
 	"github.com/DrReMain/cyber-base-server/cyber"
 	"github.com/DrReMain/cyber-base-server/cyber/initialize"
 )
@@ -33,6 +34,7 @@ func main() {
 	h := server.Default(
 		server.WithHostPorts(fmt.Sprintf(":%d", cyber.Config.System.Port)),
 	)
+	h.Use(middleware.NewLimit().HandlerFunc)
 
 	register(h)
 	h.Spin()
